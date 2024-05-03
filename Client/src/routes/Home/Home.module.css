@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.opening {
+  padding: 5vw;
+  color: #83e8ff;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.aboutMe {
+  background-color: white;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  height: 80vh;
+  width: 100%;
+}
+
+.projects {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* background-color: white; */
+}
+
+.slogan {
+  /* color: #83e8ff;
+  font-size: 2rem;
+  margin-bottom: 1rem; */
+  /* text-align: right; */
+}
+
+.devLogo {
+  width: 50vw;
+  margin: 1rem 0;
+  align-self: self-end;
+}

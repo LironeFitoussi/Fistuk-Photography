@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import styles from './Navbar.module.css';
+import { useState, useEffect } from 'react';
 import { AppBar, Box, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText, useMediaQuery, useTheme, Theme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
@@ -8,8 +9,9 @@ interface MenuItem {
   link: string;
 }
 
-export default function ButtonAppBar() {
+export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const theme: Theme = useTheme();
   const isDesktop: boolean = useMediaQuery(theme.breakpoints.up('md')); // 'md' breakpoint typically starts at 768px
 
@@ -22,8 +24,8 @@ export default function ButtonAppBar() {
   };
 
   const menuItems: MenuItem[] = [
-    { name: "Home", link: "/" },
-    { name: "Admin", link: "/admin" }
+    { name: "Home", link: "/home" },
+    { name: "Photography", link: "/photography" }
   ];
 
   const drawer = (
@@ -33,6 +35,12 @@ export default function ButtonAppBar() {
       onClose={toggleMenu}
       PaperProps={{ sx: { width: "50%" } }}
     >
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <img 
+          className={styles.mainLogo} src={isScrolled ? '/light-logo.png' : '/logo.png'}
+          alt="Lirone Fitoussi Development" 
+        />
+      </Box>
       <List>
         {menuItems.map((item) => (
           <ListItem button component={Link} to={item.link} onClick={handleMenuItemClick} key={item.name}>
@@ -60,24 +68,70 @@ export default function ButtonAppBar() {
     </Box>
   );
 
+  console.log(window.innerHeight);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      console.log(window.scrollY);
+      const vhToPixels = (vh: number): number => {
+        const windowHeight = window.innerHeight;
+        return (vh / 100) * windowHeight;
+      };
+
+      const convertedPixels = vhToPixels(80);
+      console.log(convertedPixels);
+      if (window.scrollY >= convertedPixels) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: 'white', color: 'black' }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        position: "sticky",
+        top: 0,
+      }}
+    >
+      <AppBar
+        position="static"
+        sx={{
+          backgroundColor: `${isScrolled ? '#fff' : '#00162f'}`,
+          color: 'white',
+          boxShadow: "none",
+          transition: "background-color 0.3s ease-in-out", // Add transition to background-color
+        }}
+      >
         <Toolbar>
           {!isDesktop && (
             <IconButton
+              sx={{ 
+                position: 'absolute', mr: 2, 
+                color: `${isScrolled ? '#00162f' : '#fff'}`,
+              }}
               size="large"
               edge="start"
               color="inherit"
               aria-label="menu"
-              sx={{ mr: 2 }}
               onClick={toggleMenu}
             >
               <MenuIcon />
             </IconButton>
           )}
           <Typography variant="h6" component="div" align='center' sx={{ flexGrow: 1 }}>
-            Lirone Fitoussi Photography
+            <img 
+              className={styles.mainLogo} src={isScrolled ? '/light-logo.png' : '/logo.png'}
+              alt="Lirone Fitoussi Development" 
+            />
           </Typography>
           {isDesktop && desktopMenu}
         </Toolbar>

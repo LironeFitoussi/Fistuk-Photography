@@ -1,0 +1,10 @@
+.mainLogo {
+  width: 30vw;
+  margin: 1rem 0;
+}
+
+@media (min-width: 1024px) {
+  .mainLogo {
+    width: 15vw;
+  }
+}
