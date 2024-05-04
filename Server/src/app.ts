@@ -8,6 +8,7 @@ import cors from "cors";
 
 // routes import
 import collectionsRoutes from "./routes/collectionsRoutes";
+import imagesRoutes from "./routes/imagesRoutes";
 
 declare global {
   namespace Express {
@@ -74,6 +75,8 @@ app.use((req: Request, res: Response, next) => {
 // TODO: Setup Routes
 // Example: const userRoutes = require("./routes/userRoutes");
 app.use("/api/v1/collections", collectionsRoutes); 
+app.use("/api/v1/images", imagesRoutes);
+
 // app.use("/", userRoutes);
 
 // 404 Error Handler
