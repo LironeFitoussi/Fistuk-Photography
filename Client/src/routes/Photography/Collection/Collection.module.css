@@ -1,0 +1,14 @@
+.photoList img {
+  width: 15vw;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.photoList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15vw, 1fr));
+  gap: 1rem;
+  list-style-type: none;
+}

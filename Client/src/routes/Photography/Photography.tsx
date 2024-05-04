@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router-dom';
 import styles from './Photography.module.css';
 import React, { useState } from 'react';
 
@@ -34,6 +35,7 @@ const Photography = () => {
                     {/* Render albums */}
                 </div>
             )}
+            <Outlet />
         </div>
     );
 };

@@ -14,6 +14,10 @@ import Root from "./routes/root";
 import Home from './routes/Home/Home';
 import Photography from './routes/Photography/Photography';
 
+// Photography Routes
+import Collection from './routes/Photography/Collection/Collection';
+import Album from './routes/Photography/Album/Album';
+
 // Admin Routes
 import Admin from './routes/Admin/Admin/Admin.tsx';
 import Dashboard from './routes/Admin/Dashboard/Dashboard.tsx';
@@ -37,6 +41,16 @@ const router = createBrowserRouter([
       {
         path: "photography",
         element: <Photography/>,
+        children: [
+          {
+            path: "collections/:collectionId",
+            element: <Collection/>,
+          },
+          {
+            path: "albums/:albumId",
+            element: <Album/>,
+          },
+        ]
       },
       {
         path: 'admin',
