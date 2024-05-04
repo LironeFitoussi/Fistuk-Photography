@@ -12,22 +12,22 @@ import {
   GetObjectCommand
 } from "@aws-sdk/client-s3";
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+import s3 from '../s3';
 
 
-
-// Safely retrieve environment variables
+// // Safely retrieve environment variables
 const bucketName = process.env.AWS_BUCKET_NAME
-const region = process.env.AWS_REGION 
-const accessKeyId = process.env.AWS_ACCESS_KEY || ""
-const secretAccessKey = process.env.AWS_SECRET_KEY || ""
+// const region = process.env.AWS_REGION 
+// const accessKeyId = process.env.AWS_ACCESS_KEY || ""
+// const secretAccessKey = process.env.AWS_SECRET_KEY || ""
 
-const s3 = new S3Client({
-  region,
-  credentials: {
-    accessKeyId,
-    secretAccessKey
-  }
-});
+// const s3 = new S3Client({
+//   region,
+//   credentials: {
+//     accessKeyId,
+//     secretAccessKey
+//   }
+// });
 
 interface CustomFile extends File {
     buffer: Buffer;
@@ -72,19 +72,11 @@ export const createImage = async (req: CustomRequest, res: Response) => {
             // console.log('collectionId', collectionId);
             console.log(fileName);
             
-            const getObjectParams = {
-                Bucket: bucketName,
-                Key: fileName,
-            };
-
-            const getCommand = new GetObjectCommand(getObjectParams);
-            const url = await getSignedUrl(s3, getCommand, { expiresIn: 3600 });
-
+            
             const image = new Image({
                 filename: fileName,
                 name: file.originalname,
-                url,
-                collection: collectionId,
+                collectionId: collectionId,
             });
 
             console.log('image', image);
@@ -102,8 +94,28 @@ export const getAllImages = async (req: Request, res: Response) => {
     try {
         const images = await Image.find();
 
-        res.status(200).json(images);
+        // Check if images array is empty
+        if (images.length === 0) {
+            return res.status(404).json({ message: 'No images found' });
+        }
+
+        // Get signed URLs for each image
+        const modifiedImages = await Promise.all(images.map(async (image) => {
+            const getObjectParams = {
+                Bucket: bucketName,
+                Key: image.filename,
+            };
+            const getCommand = new GetObjectCommand(getObjectParams);
+            const url = await getSignedUrl(s3, getCommand, { expiresIn: 3600 });
+            console.log('url', url);
+            
+            return { ...image.toObject(), url }; // toObject() is typically used with Mongoose models to get a plain object
+        }));
+
+        // Send the modified images array with URLs
+        res.status(200).json(modifiedImages);
     } catch (error) {
+        console.error('Failed to retrieve images:', error);
         res.status(500).json({ message: 'Failed to get images', error });
     }
 };

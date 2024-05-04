@@ -2,7 +2,6 @@ require("dotenv").config();
 const fs = require("fs");
 import { 
   S3Client, 
-  PutObjectCommand
 } from "@aws-sdk/client-s3";
 
 // Safely retrieve environment variables
@@ -18,3 +17,5 @@ const s3 = new S3Client({
     secretAccessKey
   }
 });
+
+export default s3
