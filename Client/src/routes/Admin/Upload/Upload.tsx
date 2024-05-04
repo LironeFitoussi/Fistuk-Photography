@@ -1,3 +1,4 @@
+import styles from './Upload.module.scss';
 import { useState, FormEvent, ChangeEvent } from 'react';
 import axios from 'axios';
 
