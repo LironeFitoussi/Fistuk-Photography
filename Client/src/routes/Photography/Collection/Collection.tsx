@@ -17,12 +17,12 @@ interface Collection {
     images: Photo[];
 }
 
-interface CollectionParams {
-    collectionId: string;
-}
+// interface CollectionParams {
+//     collectionId: string;
+// }
 
 const CollectionComponent: React.FC = () => {
-    const { collectionId } = useParams<CollectionParams>();
+    const { collectionId } = useParams();
     const [collection, setCollection] = useState<Collection | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -54,7 +54,7 @@ const CollectionComponent: React.FC = () => {
         return <div>No collection found.</div>;
     }
 
-    function handleDownload(photo, event) {
+    function handleDownload(photo: Photo, event: Event) {
     event.preventDefault(); // Prevent default anchor behavior
 
     fetch(photo.url, {
