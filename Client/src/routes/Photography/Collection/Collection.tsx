@@ -21,15 +21,21 @@ interface Collection {
 //     collectionId: string;
 // }
 
+type URLType = string | boolean;
+
 const CollectionComponent: React.FC = () => {
     const { collectionId } = useParams();
     const [collection, setCollection] = useState<Collection | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://default-url-if-not-set';
+    const serverUrl: URLType = import.meta.env.VITE_SERVER_URL || false;
 
     useEffect(() => {
+        if(serverUrl === false) {
+            throw new Error('Server URL not set');
+        }
         const url = `${serverUrl}/collections/${collectionId}`;
+        
         axios.get(url)
             .then(response => {
                 setCollection(response.data.data.collection);
@@ -61,7 +67,8 @@ const CollectionComponent: React.FC = () => {
         method: 'GET',
         headers: new Headers({
             'Origin': location.origin
-        })
+        }),
+        mode: 'no-cors'
     })
     .then(response => response.blob())
     .then(blob => {
@@ -74,7 +81,11 @@ const CollectionComponent: React.FC = () => {
         a.click();
         window.URL.revokeObjectURL(url);
     })
-    .catch(() => alert('Could not download the file'));
+    .catch((err: Error) => {
+        console.error('Failed to fetch image');
+        console.log(err.message);
+        
+    });
 }
 
     return (
