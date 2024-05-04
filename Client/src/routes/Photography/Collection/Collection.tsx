@@ -61,32 +61,32 @@ const CollectionComponent: React.FC = () => {
     }
 
     function handleDownload(photo: Photo, event: Event) {
-    event.preventDefault(); // Prevent default anchor behavior
+        event.preventDefault(); // Prevent default anchor behavior
 
-    fetch(photo.url, {
-        method: 'GET',
-        headers: new Headers({
-            'Origin': location.origin
-        }),
-        mode: 'no-cors'
-    })
-    .then(response => response.blob())
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = photo.name || 'download';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-    })
-    .catch((err: Error) => {
-        console.error('Failed to fetch image');
-        console.log(err.message);
-        
-    });
-}
+        fetch(photo.url, {
+            method: 'GET',
+            headers: new Headers({
+                'Origin': location.origin
+            }),
+            mode: 'no-cors'
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = photo.name || 'download';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch((err: Error) => {
+            console.error('Failed to fetch image');
+            console.log(err.message);
+            
+        });
+    }
 
     return (
         <div>
