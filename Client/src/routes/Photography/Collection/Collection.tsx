@@ -84,7 +84,6 @@ const CollectionComponent: React.FC = () => {
         .catch((err: Error) => {
             console.error('Failed to fetch image');
             console.log(err.message);
-            
         });
     }
 
