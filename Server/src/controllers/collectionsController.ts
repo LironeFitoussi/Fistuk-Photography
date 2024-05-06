@@ -73,9 +73,11 @@ export const getCollectionById = async (req: Request, res: Response) => {
 // POST create a new collection
 export const createCollection = async (req: Request, res: Response) => {
     // Your implementation here
+    console.log(req.body);
+    
     const parsedWithDate = {
         ...req.body,
-        date: new Date(req.body.date),
+        // date: new Date(req.body.date),
     }
     try {
         const newCollection = await Collection.create(parsedWithDate);

@@ -1,66 +1,70 @@
-// TODO: Setup interfaces for props and state
-
-import React ,{useState, useEffect} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+
 interface CollectionsPanelProps {
-    // Add any props you need for the component
+    // Add any additional props here if needed
+}
+
+interface Album {
+    _id: string;
+    name: string;
 }
 
 const CollectionsPanel: React.FC<CollectionsPanelProps> = () => {
-    const [albums, setAlbums] = useState([]); // TODO: Fetch albums from server
+    const collectionNameRef = useRef<HTMLInputElement>(null);
+    const albumNameRef = useRef<HTMLInputElement>(null);
 
-    // dummy albums if fetch ddit workd
+    const [albums, setAlbums] = useState<Album[]>([]);
+    const [error, setError] = useState<string | null>(null);
+
     const dummyAlbums = [
         { _id: '1', name: 'Album 1' },
         { _id: '2', name: 'Album 2' },
         { _id: '3', name: 'Album 3' },
     ];
-    // Fetch albums from server using axios with async function
+
     useEffect(() => {
         const fetchAlbums = async () => {
             try {
                 const response = await axios.get('http://localhost:3000/api/v1/albums');
                 setAlbums(response.data.data.albums);
-            } catch (error) {
+            } catch (error: any) {
                 console.error(error);
+                setError('Failed to fetch albums');
             }
         };
         fetchAlbums();
     }, []);
 
-    // Handle form submit
-    const handleColllctionSubmit = (e: any) => {
+    const handleCollectionSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const collectionName = e.target[0].value;
-        const albumName = e.target[1].value;
-        console.log(collectionName, albumName);
-        // Post collection to server using axios async funciton
-        const postCollection = async () => {
+        if (collectionNameRef.current && albumNameRef.current) {
+            const collectionName = collectionNameRef.current.value;
+            const albumName = albumNameRef.current.value;
+
             try {
                 const response = await axios.post('http://localhost:3000/api/v1/collections', {
                     name: collectionName,
-                    album: albumName,
+                    albumId: albumName,
                 });
                 console.log(response.data.data);
             } catch (error: any) {
                 console.error(error.response.data.message);
+                // setError(error.response.data.message);
             }
-        };
-        postCollection();
+        }
     };
 
     return (
         <div>
-            {/* Simple form with two input the collections name (required) and the album name open drop based on albums state(optional) */}
-            <form
-                onSubmit={handleColllctionSubmit}
-            >
-                <input type="text" placeholder="Collection Name" required />
-                <input type="text" placeholder="Album Name" list="albums" />
+            {error && <p>Error: {error}</p>}
+            <form onSubmit={handleCollectionSubmit}>
+                <input type="text" placeholder="Collection Name" required ref={collectionNameRef} />
+                <input type="text" placeholder="Album Name" list="albums" ref={albumNameRef} />
                 <datalist id="albums">
-                    {albums.length > 0? albums.map((album: any) => ( //TODO: Setup interface for album
+                    {albums.length > 0 ? albums.map(album => (
                         <option key={album._id} value={album.name} />
-                    )) : dummyAlbums.map((album: any) => ( //TODO: Setup interface for album
+                    )) : dummyAlbums.map(album => (
                         <option key={album._id} value={album.name} />
                     ))}
                 </datalist>

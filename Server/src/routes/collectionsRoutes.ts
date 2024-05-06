@@ -6,13 +6,13 @@ const router = express.Router();
 // GET all photos
 router.get('/', getAllCollections);
 
-// GET photo by ID
+// GET Collection by ID
 router.get('/:id', getCollectionById);
 
-// POST create a new photo
+// POST create a new Collection
 router.post('/', createCollection);
 
-// DELETE a photo
+// DELETE a Collection
 router.delete('/:id', deleteCollection);
 
 export default router;
