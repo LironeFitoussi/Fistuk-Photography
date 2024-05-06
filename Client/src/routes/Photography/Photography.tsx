@@ -31,7 +31,7 @@ const Photography = () => {
         const collections = async () => {
             try {
                 const response = await axios.get('http://localhost:3000/api/v1/collections');
-                console.log(response.data.data.collections);
+                // console.log(response.data.data.collections);
                 setCollections(response.data.data.collections);
             } catch (error) {
                 console.error(error);
@@ -47,7 +47,7 @@ const Photography = () => {
         const albums = async () => {
             try {
                 const response = await axios.get('http://localhost:3000/api/v1/albums');
-                console.log(response.data.data.albums);
+                // console.log(response.data.data.albums);
                 setAlbums(response.data.data.albums);
             } catch (error) {
                 console.error(error);
@@ -75,7 +75,7 @@ const Photography = () => {
                     <ul>
                         {collections.map((collection: Collection) => (
                             <li key={collection._id}>
-                                <Link to={`/photography/collections/${collection._id}`}>{collection.name}</Link>
+                                <Link to={`/collections/${collection._id}`}>{collection.name}</Link>
                             </li>
                         ))}
                     </ul>
@@ -88,7 +88,7 @@ const Photography = () => {
                     <ul>
                         {albums.map((album: any) => (
                             <li key={album._id}>
-                                <Link to={`/photography/albums/${album._id}`}>{album.name}</Link>    
+                                <Link to={`/albums/${album._id}`}>{album.name}</Link>    
                             </li>
                         ))}
                     </ul>

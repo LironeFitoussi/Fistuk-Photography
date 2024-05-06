@@ -76,18 +76,18 @@ export default function Navbar() {
     </Box>
   );
 
-  console.log(window.innerHeight);
+  // console.log(window.innerHeight);
 
   useEffect(() => {
     const handleScroll = () => {
-      console.log(window.scrollY);
+      // console.log(window.scrollY);
       const vhToPixels = (vh: number): number => {
         const windowHeight = window.innerHeight;
         return (vh / 100) * windowHeight;
       };
 
       const convertedPixels = vhToPixels(80);
-      console.log(convertedPixels);
+      // console.log(convertedPixels);
       if (window.scrollY >= convertedPixels) {
         setIsScrolled(true);
       } else {

@@ -1,28 +1,41 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, ObjectId, PopulateOptions, Model } from 'mongoose';
+import { ICollection } from '../models/Collections.model';
 
-// Define an interface for the Album document that extends mongoose.Document
 interface IAlbum extends Document {
-    name: string;
-    date: Date;
-    location: string;
-    createdAt: Date;
-    updatedAt: Date;
+  _id: ObjectId;
+  name: string;
+  date: Date;
+  location: string;
+  createdAt: Date;
+  updatedAt: Date;
+  collections: ICollection[];
 }
 
-// Define the Album schema
 const albumSchema: Schema = new Schema({
-    name: { 
-        type: String, 
-        required: true,
-        unique: true  // Ensure no two albums have the same name
-    },
-    date: { type: Date, required: true },
-    location: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
+  name: { type: String, required: true, unique: true },
+  date: { type: Date, required: true },
+  location: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
-// Create a model based on the schema and interface
-const AlbumModel = mongoose.model<IAlbum>('Album', albumSchema);
+albumSchema.virtual('collections', {
+  ref: 'Collection',
+  localField: '_id',
+  foreignField: 'albumId'
+});
 
+albumSchema.set('toJSON', { virtuals: true });
+albumSchema.set('toObject', { virtuals: true });
+
+albumSchema.pre(/^find/, function (next) {
+  const populateOptions: PopulateOptions = {
+    path: 'collections',
+    model: 'Collection'
+  };
+  (this.populate as any)(populateOptions); // Cast the populate method to `any`
+  next();
+});
+
+const AlbumModel = mongoose.model<IAlbum>('Album', albumSchema);
 export default AlbumModel;

@@ -6,7 +6,15 @@ const Root: React.FC = () => {
   return (
     <>
       <Navbar />
-      <Outlet />
+      <div style={{
+        minHeight: '80vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+      }}>
+        <Outlet />
+      </div>
       <Footer />
     </>
   );

@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface ICollection extends Document {
+export interface ICollection extends Document {
     name: string;
     albumId: string;
 

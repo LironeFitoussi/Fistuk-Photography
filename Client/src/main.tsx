@@ -41,16 +41,14 @@ const router = createBrowserRouter([
       {
         path: "photography",
         element: <Photography/>,
-        children: [
-          {
-            path: "collections/:collectionId",
-            element: <Collection/>,
-          },
-          {
-            path: "albums/:albumId",
-            element: <Album/>,
-          },
-        ]
+      },
+      {
+        path: "collections/:collectionId",
+        element: <Collection/>,
+      },
+      {
+        path: "albums/:albumId",
+        element: <Album/>,
       },
       {
         path: 'admin',

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Collection from '../models/Collections.model';
 import Image from '../models/Image.model';
-
+import Album from '../models/Album.model';
 // GET all collections
 export const getAllCollections = async (req: Request, res: Response) => {
     try {
@@ -74,17 +74,26 @@ export const getCollectionById = async (req: Request, res: Response) => {
 export const createCollection = async (req: Request, res: Response) => {
     // Your implementation here
     console.log(req.body);
-    
-    const parsedWithDate = {
-        ...req.body,
-        // date: new Date(req.body.date),
+    const { name, albumId } = req.body;
+
+    // Find the album by ID and check if it exists
+    const album = await Album.findOne({ name: albumId });
+    if (!album) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'No album found with that ID'
+        });
     }
     try {
-        const newCollection = await Collection.create(parsedWithDate);
+        const collection = new Collection({
+            name,
+            albumId: album._id,
+        });
+        await collection.save();
         res.status(201).json({
             status: 'success',
             data: {
-                collection: newCollection,
+                collection,
             },
         });
     } catch (err) {
