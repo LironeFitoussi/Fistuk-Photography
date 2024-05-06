@@ -108,6 +108,7 @@ export default function Navbar() {
         flexGrow: 1,
         position: "sticky",
         top: 0,
+        zIndex: 1000,
       }}
     >
       <AppBar
