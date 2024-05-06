@@ -9,7 +9,7 @@ import cors from "cors";
 // routes import
 import collectionsRoutes from "./routes/collectionsRoutes";
 import imagesRoutes from "./routes/imagesRoutes";
-
+import albumsRoutes from "./routes/albumsRoutes";
 declare global {
   namespace Express {
     interface Request {
@@ -76,6 +76,7 @@ app.use((req: Request, res: Response, next) => {
 // Example: const userRoutes = require("./routes/userRoutes");
 app.use("/api/v1/collections", collectionsRoutes); 
 app.use("/api/v1/images", imagesRoutes);
+app.use("/api/v1/albums", albumsRoutes);
 
 // app.use("/", userRoutes);
 

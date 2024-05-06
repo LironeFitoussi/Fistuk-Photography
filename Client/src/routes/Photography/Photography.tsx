@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import styles from './Photography.module.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 interface Collection {
     date: string;
@@ -16,13 +17,15 @@ interface Collection {
 const Photography = () => {
     const [activeLink, setActiveLink] = useState('collections');
     const [collections, setCollections] = useState([]);
+    const [albums, setAlbums] = useState([]);
+
     // const [albums, setAlbums] = useState([]); // TODO: Fetch albums from server
 
     const handleLinkClick = (link: string) => {
         setActiveLink(link);
     };
 
-    // Fetch coleections names from Server 
+    // Fetch collections names from Server 
     useEffect(() => {
         // Fetch collections in async function
         const collections = async () => {
@@ -37,6 +40,22 @@ const Photography = () => {
         collections();
     }
     , []);
+
+    // Fetch Albums names from Server
+    useEffect(() => {
+        // Fetch Albums in async function
+        const albums = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/v1/albums');
+                console.log(response.data.data.albums);
+                setAlbums(response.data.data.albums);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        albums();
+    }, []);
+
     return (
         <div>
             <nav >
@@ -52,12 +71,11 @@ const Photography = () => {
 
             {activeLink === 'collections' && (
                 <div>
-                    <p>dfsgsdgfsdg</p>
                     {/* Renders a list of Collection names with link to /collections/:collectionId */}
                     <ul>
                         {collections.map((collection: Collection) => (
                             <li key={collection._id}>
-                                <a href={`/photography/collections/${collection._id}`}>{collection.name}</a>
+                                <Link to={`/photography/collections/${collection._id}`}>{collection.name}</Link>
                             </li>
                         ))}
                     </ul>
@@ -66,8 +84,14 @@ const Photography = () => {
 
             {activeLink === 'albums' && (
                 <div>
-                    <p>sdfgsdfgsdfg</p>
-                    {/* Render albums */}
+                    {/* Renders a list of Album names with link to /album/:albumId */}
+                    <ul>
+                        {albums.map((album: any) => (
+                            <li key={album._id}>
+                                <Link to={`/photography/albums/${album._id}`}>{album.name}</Link>    
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             )}
             <Outlet />

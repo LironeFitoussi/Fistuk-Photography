@@ -13,9 +13,8 @@ const collectionSchema: Schema = new Schema({
         // Ensure that the name is unique
         unique: true
      },
-    // date: { type: Date, required: true },
-    // location: { type: String, required: true },
-    albumId: { type: String, required: false },
+    imageCover: { type: String, required: false },
+    albumId: { type: mongoose.Schema.Types.ObjectId, ref: 'Album', required: true }
 });
 
 const CollectionModel = mongoose.model<ICollection>('Collection', collectionSchema);

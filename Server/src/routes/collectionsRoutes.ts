@@ -1,6 +1,5 @@
 import express from 'express';
 import { getAllCollections, getCollectionById, createCollection, deleteCollection } from '../controllers/collectionsController';
-
 const router = express.Router();
 
 // GET all photos
