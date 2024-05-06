@@ -1,11 +1,6 @@
 import styles from './Upload.module.css';
-import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import { useState, useRef, FormEvent, ChangeEvent, useEffect } from 'react';
 import axios from 'axios';
-
-interface PostImageProps {
-    images: File[];
-    description: string;
-}
 
 interface ImageData {
     result: any;
@@ -30,7 +25,7 @@ interface Collection {
 function PostImage() {
     const [files, setFiles] = useState<File[]>([]);
     const [fileNames, setFileNames] = useState<string[]>([]);
-    const [description, setDescription] = useState<string>("");
+    const collectionInputRef = useRef<HTMLInputElement>(null);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState("");
     const [dragging, setDragging] = useState(false);
@@ -39,13 +34,13 @@ function PostImage() {
 
     const submit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
-        if (files.length === 0) return;
+        if (files.length === 0 || !collectionInputRef.current) return;
 
         setUploading(true);
         setError("");
         setUploadSuccess(false);
         try {
-            const result = await uploadImages({ images: files, description });
+            const result = await uploadImages(files, collectionInputRef.current.value);
             console.log(result);
             setUploadSuccess(true);
             setFiles([]);
@@ -66,10 +61,10 @@ function PostImage() {
         }
     };
 
-    async function uploadImages({ images, description }: PostImageProps): Promise<ImageData[]> {
+    async function uploadImages(images: File[], collectionName: string): Promise<ImageData[]> {
         const formData = new FormData();
         images.forEach(image => formData.append('image', image));
-        formData.append("description", description);
+        formData.append("collectionName", collectionName); // Using collectionName as the description
 
         try {
             const result = await axios.post<ApiResponse>('http://localhost:3000/api/v1/images', formData, {
@@ -82,7 +77,6 @@ function PostImage() {
         }
     }
 
-    // Fetch list of Exisitng Colleciton using axios async/await and hold the data in collections state
     useEffect(() => {
         const fetchCollections = async () => {
             try {
@@ -95,7 +89,6 @@ function PostImage() {
         };
         fetchCollections();
     }, []);
-
 
     const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
         e.preventDefault();
@@ -147,12 +140,11 @@ function PostImage() {
                 <label>
                     Collection:
                 </label>
-                <input list="collections" name="collections" />
-                <datalist id="collections"  className={styles.collectionsInput}>
-                    {collections.length > 0 ? collections.map(collection => (
+                <input list="collections" ref={collectionInputRef} />
+                <datalist id="collections" className={styles.collectionsInput}>
+                    {collections.map(collection => (
                         <option key={collection._id} value={collection.name} />
-                    )) : <option value="No collections found" />
-                    }
+                    ))}
                 </datalist>
                 <button type="submit" disabled={uploading}>Submit</button>
             </form>
@@ -164,3 +156,4 @@ function PostImage() {
 }
 
 export default PostImage;
+

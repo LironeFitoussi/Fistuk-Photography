@@ -43,11 +43,11 @@ interface CustomRequest extends Request {
 const randomIamgeName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
 
 export const createImage = async (req: CustomRequest, res: Response) => {
-    const { description } = req.body;
+    const { collectionName } = req.body;
     console.log('req.body', req.body);
-    console.log('description', description);
+    console.log('collectionName', collectionName);
     
-    const collection = await Collection.findOne({ name: description });
+    const collection = await Collection.findOne({ name: collectionName });
 
     if (!collection) {
         console.log('Collection not found');
