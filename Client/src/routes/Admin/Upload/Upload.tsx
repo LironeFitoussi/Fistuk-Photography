@@ -1,5 +1,5 @@
 import styles from './Upload.module.css';
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import axios from 'axios';
 
 interface PostImageProps {
@@ -17,6 +17,16 @@ interface ApiResponse {
     results: ImageData[];
 }
 
+interface Collection {
+    date: string;
+    description: string;
+    images: string[];
+    location: string;
+    name: string;
+    __v: number;
+    _id: string;
+}
+
 function PostImage() {
     const [files, setFiles] = useState<File[]>([]);
     const [fileNames, setFileNames] = useState<string[]>([]);
@@ -25,6 +35,7 @@ function PostImage() {
     const [error, setError] = useState("");
     const [dragging, setDragging] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
+    const [collections, setCollections] = useState<Collection[]>([]);
 
     const submit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
@@ -65,11 +76,26 @@ function PostImage() {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             return result.data.results;
-        } catch (error) {
+        } catch (error: any) {
             console.error("Failed to upload images", error.response.data);
             throw error.response.data.message;
         }
     }
+
+    // Fetch list of Exisitng Colleciton using axios async/await and hold the data in collections state
+    useEffect(() => {
+        const fetchCollections = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/v1/collections');
+                setCollections(response.data.data.collections);
+            } catch (error: any) {
+                console.error(error);
+                setError('Failed to fetch collections');
+            }
+        };
+        fetchCollections();
+    }, []);
+
 
     const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
         e.preventDefault();
@@ -120,12 +146,14 @@ function PostImage() {
                 </div>
                 <label>
                     Collection:
-                    <input 
-                        value={description} 
-                        onChange={e => setDescription(e.target.value)} 
-                        type="text" 
-                    />
                 </label>
+                <input list="collections" name="collections" />
+                <datalist id="collections"  className={styles.collectionsInput}>
+                    {collections.length > 0 ? collections.map(collection => (
+                        <option key={collection._id} value={collection.name} />
+                    )) : <option value="No collections found" />
+                    }
+                </datalist>
                 <button type="submit" disabled={uploading}>Submit</button>
             </form>
             {uploading && <p>Uploading...</p>}

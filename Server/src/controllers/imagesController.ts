@@ -44,6 +44,9 @@ const randomIamgeName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex'
 
 export const createImage = async (req: CustomRequest, res: Response) => {
     const { description } = req.body;
+    console.log('req.body', req.body);
+    console.log('description', description);
+    
     const collection = await Collection.findOne({ name: description });
 
     if (!collection) {

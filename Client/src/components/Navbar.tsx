@@ -25,7 +25,15 @@ export default function Navbar() {
 
   const menuItems: MenuItem[] = [
     { name: "Home", link: "/home" },
-    { name: "Photography", link: "/photography" }
+    { name: "Photography", link: "/photography" },
+    // Check VITE_MODE and if development, add the following menu items
+    ...(import.meta.env.VITE_MODE === 'development' ? [
+      { name: "Admin", link: "/admin" },
+      { name: "Upload", link: "/admin/upload" },
+      { name: "Collections", link: "/admin/collections" },
+      { name: "Albums", link: "/admin/albums" },
+    ] : []),
+
   ];
 
   const drawer = (

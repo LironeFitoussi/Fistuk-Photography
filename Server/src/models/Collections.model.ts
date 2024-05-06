@@ -3,10 +3,16 @@ import mongoose, { Schema, Document } from 'mongoose';
 interface ICollection extends Document {
     name: string;
     albumId: string;
+
 }
 
 const collectionSchema: Schema = new Schema({
-    name: { type: String, required: true },
+    name: { 
+        type: String, 
+        required: true,
+        // Ensure that the name is unique
+        unique: true
+     },
     // date: { type: Date, required: true },
     // location: { type: String, required: true },
     albumId: { type: String, required: false },

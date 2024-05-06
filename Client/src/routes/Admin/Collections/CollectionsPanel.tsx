@@ -48,6 +48,10 @@ const CollectionsPanel: React.FC<CollectionsPanelProps> = () => {
                     albumId: albumName,
                 });
                 console.log(response.data.data);
+                // Rest fields
+                collectionNameRef.current.value = '';
+                albumNameRef.current.value = '';
+                alert('Collection created successfully');
             } catch (error: any) {
                 console.error(error.response.data.message);
                 // setError(error.response.data.message);
