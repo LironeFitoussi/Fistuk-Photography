@@ -3,23 +3,13 @@ import styles from './Photography.module.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
-interface Collection {
-    date: string;
-    description: string;
-    images: string[]; // Define a more specific type instead of 'any' if the image structure is known
-    location: string;
-    name: string;
-    __v: number;
-    _id: string;
-}
+import AlbumTable from '../../components/AlbumTable';
+import { Collection } from '../../types/interfaces';
 
 const Photography = () => {
     const [activeLink, setActiveLink] = useState('collections');
     const [collections, setCollections] = useState([]);
     const [albums, setAlbums] = useState([]);
-
-    // const [albums, setAlbums] = useState([]); // TODO: Fetch albums from server
 
     const handleLinkClick = (link: string) => {
         setActiveLink(link);
@@ -85,13 +75,14 @@ const Photography = () => {
             {activeLink === 'albums' && (
                 <div>
                     {/* Renders a list of Album names with link to /album/:albumId */}
-                    <ul>
+                    {/* <ul>
                         {albums.map((album: any) => (
                             <li key={album._id}>
                                 <Link to={`/albums/${album._id}`}>{album.name}</Link>    
                             </li>
                         ))}
-                    </ul>
+                    </ul> */}
+                    <AlbumTable albums={albums} />
                 </div>
             )}
             <Outlet />

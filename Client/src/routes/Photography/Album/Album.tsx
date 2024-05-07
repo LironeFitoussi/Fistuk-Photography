@@ -28,7 +28,6 @@ const Album: React.FC<AlbumProps> = () => {
     return (
         // display the albums here
         <div className={styles.container}>
-            <h1>Albums</h1>
             <AlbumTable albums={albums} />
         </div>
     );

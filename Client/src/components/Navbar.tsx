@@ -114,8 +114,8 @@ export default function Navbar() {
       <AppBar
         position="static"
         sx={{
-          backgroundColor: `${isScrolled ? '#fff' : '#00162f'}`,
-          color: 'white',
+          backgroundColor: `${isScrolled ? '#00162f' : '#fff'}`,
+          color: 'black',
           boxShadow: "none",
           transition: "background-color 0.3s ease-in-out", // Add transition to background-color
         }}
@@ -125,7 +125,7 @@ export default function Navbar() {
             <IconButton
               sx={{ 
                 position: 'absolute', mr: 2, 
-                color: `${isScrolled ? '#00162f' : '#fff'}`,
+                color: `${isScrolled ? '#fff' : '#00162f'}`,
               }}
               size="large"
               edge="start"

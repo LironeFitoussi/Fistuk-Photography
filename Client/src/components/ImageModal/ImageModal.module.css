@@ -1,0 +1,41 @@
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 90vh;
+  transform: translate(-50%, -50%);
+  width: 80%; /* Adjusted for better responsiveness */
+  /* background-color: var(--mui-palette-background-paper); */
+  background-color: #fff; /* White background for better contrast */
+  box-shadow: 24px;
+  /* border-radius: 1rem; */
+  padding: 20px; /* Slightly increased padding for better spacing*/
+  max-width: 600px; /* Max width to prevent overly large modals on big screens */
+  overflow: hidden; /* Ensures no overflow out of the modal boundaries */
+}
+
+.textWrap {
+  overflow-wrap: break-word; /* Ensures text wraps to avoid horizontal scrolling */
+  margin-top: 8px; /* Consistent top margin for spacing between texts */
+  color: #22222279; /* Slightly darker text for better readability */
+}
+
+.image {
+  width: 100%; /* Makes the image responsive */
+  height: auto; /* Maintains aspect ratio */
+  margin-top: 12px; /* Space between the image and text above */
+  border-radius: 8px; /* Optional: Adds rounded corners to the image */
+}
+
+.backdrop {
+  backdrop-filter: blur(8px); /* Blur effect for modal backdrop */
+  -webkit-backdrop-filter: blur(8px); /* Safari compatibility */
+  /* Add draker filter */
+  background-color: rgba(0, 0, 0, 0.5); /* Slightly transparent white */
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
