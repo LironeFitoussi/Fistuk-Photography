@@ -1,34 +1,34 @@
 import styles from './Album.module.css';
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import AlbumTable from '../../../components/AlbumTable';
+import CollectionCard from '../../../components/CollectionCard';
+import { Collection } from '../../../types/interfaces';
 interface AlbumProps {
     // Define the props for the Album component here
 }
 
 const Album: React.FC<AlbumProps> = () => {
-    const [albums, setAlbums] = React.useState([]);
+    const [collections, setCollections] = React.useState([]);
     useEffect(() => {
-        // Fetch Albums from  server usinx axios in a async function
-        const fetchAlbums = async () => {
+        // Fetch Collections from  server usinx axios in a async function
+        const fetchCollections = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/v1/albums');
-                console.log(response.data.data.albums);
-
-                // Set the state of the albums here
-                setAlbums(response.data.data.albums);
+                const response = await axios.get('http://localhost:3000/api/v1/collections');
+                setCollections(response.data.data.collections);
             } catch (error) {
                 console.error(error);
             }
         };
-        fetchAlbums();
+        fetchCollections();
     }, []);
 
     // Define the Album component here
     return (
         // display the albums here
         <div className={styles.container}>
-            <AlbumTable albums={albums} />
+            {collections.map((collection: Collection) => (
+                <CollectionCard collection={collection} />
+            ))}
         </div>
     );
 };

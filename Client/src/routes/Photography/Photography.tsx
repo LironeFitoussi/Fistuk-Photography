@@ -3,11 +3,12 @@ import styles from './Photography.module.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import AlbumTable from '../../components/AlbumTable';
+// import AlbumTable from '../../components/AlbumTable';
+import AlbumCard from '../../components/AlbumCard/AlbumCard';
 import { Collection } from '../../types/interfaces';
-
+import { Album } from '../../types/interfaces';
 const Photography = () => {
-    const [activeLink, setActiveLink] = useState('collections');
+    const [activeLink, setActiveLink] = useState('albums');
     const [collections, setCollections] = useState([]);
     const [albums, setAlbums] = useState([]);
 
@@ -47,17 +48,15 @@ const Photography = () => {
     }, []);
 
     return (
-        <div>
-            <nav >
-                <ul className={styles.nav}>
-                    <li>
-                        <button onClick={() => handleLinkClick('collections')}>Collections</button>
-                    </li>
-                    <li>
-                        <button onClick={() => handleLinkClick('albums')}>Albums</button>
-                    </li>
-                </ul>
-            </nav>
+        <div className={styles.container}>
+            {/* <ul className={styles.nav}>
+                <li>
+                    <button onClick={() => handleLinkClick('collections')}>Collections</button>
+                </li>
+                <li>
+                    <button onClick={() => handleLinkClick('albums')}>Albums</button>
+                </li>
+            </ul> */}
 
             {activeLink === 'collections' && (
                 <div>
@@ -82,7 +81,11 @@ const Photography = () => {
                             </li>
                         ))}
                     </ul> */}
-                    <AlbumTable albums={albums} />
+                    {/* <AlbumTable albums={albums} /> */}
+                    {albums.map((album: Album) => (
+                        <AlbumCard album={album} />
+                    ))}
+
                 </div>
             )}
             <Outlet />
