@@ -1,38 +1,38 @@
 import { Outlet } from 'react-router-dom';
 import styles from './Photography.module.css';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 // import AlbumTable from '../../components/AlbumTable';
 import AlbumCard from '../../components/AlbumCard/AlbumCard';
-import { Collection } from '../../types/interfaces';
+// import { Collection } from '../../types/interfaces';
 import { Album } from '../../types/interfaces';
 import serverUrl from '../../utils/APIUrl';
 
 const Photography = () => {
-    const [activeLink, setActiveLink] = useState('albums');
-    const [collections, setCollections] = useState([]);
+    // const [activeLink, setActiveLink] = useState('albums');
+    // const [collections, setCollections] = useState([]);
     const [albums, setAlbums] = useState([]);
 
-    const handleLinkClick = (link: string) => {
-        setActiveLink(link);
-    };
+    // const handleLinkClick = (link: string) => {
+    //     setActiveLink(link);
+    // };
 
     // Fetch collections names from Server 
-    useEffect(() => {
-        // Fetch collections in async function
-        const collections = async () => {
-            try {
-                const response = await axios.get(`${serverUrl}/api/v1/collections`);
-                // console.log(response.data.data.collections);
-                setCollections(response.data.data.collections);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        collections();
-    }
-    , []);
+    // useEffect(() => {
+    //     Fetch collections in async function
+    //     const collections = async () => {
+    //         try {
+    //             const response = await axios.get(`${serverUrl}/api/v1/collections`);
+    //             console.log(response.data.data.collections);
+    //             setCollections(response.data.data.collections);
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
+    //     collections();
+    // }
+    // , []);
 
     // Fetch Albums names from Server
     useEffect(() => {
@@ -59,10 +59,10 @@ const Photography = () => {
                     <button onClick={() => handleLinkClick('albums')}>Albums</button>
                 </li>
             </ul> */}
-
+{/*
             {activeLink === 'collections' && (
                 <div>
-                    {/* Renders a list of Collection names with link to /collections/:collectionId */}
+                     Renders a list of Collection names with link to /collections/:collectionId 
                     <ul>
                         {collections.map((collection: Collection) => (
                             <li key={collection._id}>
@@ -72,8 +72,8 @@ const Photography = () => {
                     </ul>
                 </div>
             )}
-
-            {activeLink === 'albums' && (
+*/}
+            { (
                 <div>
                     {/* Renders a list of Album names with link to /album/:albumId */}
                     {/* <ul>

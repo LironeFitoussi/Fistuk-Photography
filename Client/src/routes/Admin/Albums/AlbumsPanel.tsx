@@ -3,14 +3,9 @@ import React, {useEffect} from 'react';
 import axios from 'axios';
 import AdminTable from '../../../components/AdminTable';
 import serverUrl from '../../../utils/APIUrl';
-interface Album {
-    id: number;
-    title: string;
-    artist: string;
-}
 
 const AlbumsPanel: React.FC = () => {
-    const [isDataLoaded, setIsDataLoaded] = React.useState(false);
+    // const [isDataLoaded, setIsDataLoaded] = React.useState(false);
     const [albums, setAlbums] = React.useState([]);
     // console.log(albums);
     // Fetch Albums from  server usinx axios in a async function

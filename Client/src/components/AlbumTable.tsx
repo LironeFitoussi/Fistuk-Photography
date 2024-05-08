@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -37,7 +37,7 @@ const AlbumTable: React.FC<AlbumTableProps> = ({ albums }) => {
 
 
   // state to hold type of screen
-  const [screenType, setScreenType] = React.useState('desktop');
+  const [screenType, setScreenType] = useState('desktop');
 
   // function to handle screen size change
   const handleScreenSizeChange = () => {

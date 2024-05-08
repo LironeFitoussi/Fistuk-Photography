@@ -41,9 +41,6 @@ const CollectionComponent: React.FC = () => {
     console.log(collection);
     
     useEffect(() => {
-        if(serverUrl === false) {
-            throw new Error('Server URL not set');
-        }
         const url = `${serverUrl}/collections/${collectionId}`;
         
         axios.get(url)
@@ -78,16 +75,14 @@ const CollectionComponent: React.FC = () => {
         setSelectedImage(photo);
     }
 
-    function handleDownload(photo: Photo, event: React.MouseEvent<HTMLAnchorElement>) {
-        // open photos.url in a new tab
-        event.preventDefault();
-        const url = photo.url;
-        window
-            .open(url, '_blank')
-            ?.focus();
-        
- 
-    }
+    // function handleDownload(photo: Photo, event: React.MouseEvent<HTMLAnchorElement>) {
+    //     // open photos.url in a new tab
+    //     event.preventDefault();
+    //     const url = photo.url;
+    //     window
+    //         .open(url, '_blank')
+    //         ?.focus();
+    // }
 
     return (
         <div className={styles.container}>
@@ -129,7 +124,7 @@ const CollectionComponent: React.FC = () => {
                         open={true}
                         onClose={() => setSelectedImage(null)}
                         image={selectedImage}
-                        download={() => handleDownload(selectedImage, new Event('click'))}
+                        // download={() => handleDownload(selectedImage)}
                     />
                 )
             }

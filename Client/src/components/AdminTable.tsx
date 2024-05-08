@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 interface DataItem {

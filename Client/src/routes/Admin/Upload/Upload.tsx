@@ -100,6 +100,7 @@ function PostImage() {
     };
 
     const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault();
         setDragging(false);
     };
 

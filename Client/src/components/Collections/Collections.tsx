@@ -28,6 +28,8 @@ const Collections: React.FC<CollectionsProps> = () => {
         fetchCollections();
     }, []);
 
+    console.log(collections);
+    
     return (
         <div>
             {/* Add your component code here */}

@@ -21,7 +21,7 @@ interface BasicModalProps {
   open: boolean;
   onClose: () => void;
   image: Photo;
-  download: () => void;
+  download?: () => void;
 }
 
 const ImageModal: React.FC<BasicModalProps> = ({ open, onClose, image, download }) => {
