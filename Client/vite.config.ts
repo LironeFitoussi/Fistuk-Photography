@@ -10,6 +10,13 @@ export default defineConfig({
       targets: ['defaults', 'not IE 11']
     })
   ],
+  build: {
+    // Adjust the asset chunk size limit (in bytes)
+    assetsInlineLimit: 1000000, // Set the limit to 1 MB (1000 kB)
+  },
+  optimizeDeps: {
+    include: ['lodash', 'axios'],
+  },
   define: {
     global: 'globalThis' // This sets up 'global' as an alias to 'globalThis'
   }

@@ -5,7 +5,6 @@ import mongoSanitize from "express-mongo-sanitize";
 import xss from "xss-clean";
 import hpp from "hpp";
 import cors from "cors";
-import fs from "fs";
 import AdmZip from "adm-zip";
 import path from 'path';
 import AWS from 'aws-sdk';
