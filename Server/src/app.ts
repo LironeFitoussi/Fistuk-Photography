@@ -5,6 +5,10 @@ import mongoSanitize from "express-mongo-sanitize";
 import xss from "xss-clean";
 import hpp from "hpp";
 import cors from "cors";
+import fs from "fs";
+import AdmZip from "adm-zip";
+import path from 'path';
+import AWS from 'aws-sdk';
 
 // routes import
 import collectionsRoutes from "./routes/collectionsRoutes";
@@ -78,6 +82,44 @@ app.use("/api/v1/collections", collectionsRoutes);
 app.use("/api/v1/images", imagesRoutes);
 app.use("/api/v1/albums", albumsRoutes);
 
+
+//! TODO: Setup Routes 
+
+AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY as string,
+    secretAccessKey: process.env.AWS_SECRET_KEY as string,
+    region: process.env.AWS_REGION as string,
+});
+const s3 = new AWS.S3();
+
+
+app.post('/api/v1/compress', async (req, res) => {
+    const { files } = req.body;
+
+    try {
+        const zip = new AdmZip();
+
+        // Download files from S3 and add them to the zip archive
+        for (const filename of files) {
+            const params = {
+                Bucket: process.env.AWS_BUCKET_NAME as string,
+                Key: filename // Assuming filenames are keys in your S3 bucket
+            };
+            const { Body } = await s3.getObject(params).promise();
+            zip.addFile(filename, Body);
+        }
+
+        const outputFilePath = path.join(__dirname, '/images.zip');
+        zip.writeZip(outputFilePath);
+
+        res.download(outputFilePath);
+    } catch (error) {
+        console.error('Error compressing files:', error);
+        res.status(500).send('Error compressing files');
+    }
+});
+
+//! TODO: Setup Routes
 // app.use("/", userRoutes);
 
 // 404 Error Handler

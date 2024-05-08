@@ -28,7 +28,10 @@ const CollectionComponent: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
-    console.log(selectedImage);
+    const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
+
+    // console.log(selectedImage);
+    // console.log(selectedFiles);
     
     useEffect(() => {
         axios.get(`${serverUrl}/api/v1/collections/${collectionId}`)
@@ -42,6 +45,15 @@ const CollectionComponent: React.FC = () => {
                 setLoading(false);
             });
     }, [collectionId, serverUrl]);
+
+    useEffect(() => { 
+        // console.log('Collection:', collection);
+        if (collection) {
+            const files = collection.images.map((image) => image.filename);
+            // console.log('Selected files:', files);
+            setSelectedFiles(files);
+        }
+    }, [collection]);
 
     if (loading) {
         return (
@@ -63,6 +75,23 @@ const CollectionComponent: React.FC = () => {
         setSelectedImage(photo);
     }
 
+
+    const handleFullCollectionDownload = async () => {
+        try {
+            const response = await axios.post(`${serverUrl}/api/v1/compress`, { files: selectedFiles }, { responseType: 'blob' });
+            const url = URL.createObjectURL(response.data);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'images.rar';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error downloading RAR archive:', error);
+        }
+    };
+
+
     const downloadImageFromS3 = async () => {
         if (selectedImage === null) {
             return;
@@ -77,7 +106,7 @@ const CollectionComponent: React.FC = () => {
                 const url = URL.createObjectURL(new Blob([data.Body]));
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = 'image.jpg';
+                link.download = 'LironeFitoussiPhotographer_' + selectedImage.filename ;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -108,6 +137,14 @@ const CollectionComponent: React.FC = () => {
                     download={() => downloadImageFromS3()}
                 />
             )}
+
+            {/* Button to download full collection */}
+            <button onClick={() => {
+                console.log('Download full collection')
+                handleFullCollectionDownload();    
+            }}>
+                Download full collection
+            </button>
         </div>
     );
 };

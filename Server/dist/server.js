@@ -16,7 +16,7 @@
   \********************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst express_1 = __importDefault(__webpack_require__(/*! express */ \"express\"));\nconst express_rate_limit_1 = __importDefault(__webpack_require__(/*! express-rate-limit */ \"express-rate-limit\"));\nconst helmet_1 = __importDefault(__webpack_require__(/*! helmet */ \"helmet\"));\nconst express_mongo_sanitize_1 = __importDefault(__webpack_require__(/*! express-mongo-sanitize */ \"express-mongo-sanitize\"));\nconst xss_clean_1 = __importDefault(__webpack_require__(/*! xss-clean */ \"xss-clean\"));\nconst hpp_1 = __importDefault(__webpack_require__(/*! hpp */ \"hpp\"));\nconst cors_1 = __importDefault(__webpack_require__(/*! cors */ \"cors\"));\n// routes import\nconst collectionsRoutes_1 = __importDefault(__webpack_require__(/*! ./routes/collectionsRoutes */ \"./src/routes/collectionsRoutes.ts\"));\nconst imagesRoutes_1 = __importDefault(__webpack_require__(/*! ./routes/imagesRoutes */ \"./src/routes/imagesRoutes.ts\"));\nconst albumsRoutes_1 = __importDefault(__webpack_require__(/*! ./routes/albumsRoutes */ \"./src/routes/albumsRoutes.ts\"));\nconst app = (0, express_1.default)();\n// Set security HTTP headers\napp.use((0, helmet_1.default)());\n// Development logging\nif (true) {\n    const morgan = __webpack_require__(/*! morgan */ \"morgan\");\n    app.use(morgan(\"dev\"));\n}\n// Body parser, reading data from body into req.body\napp.use(express_1.default.json({ limit: \"10kb\" }));\napp.use(express_1.default.urlencoded({ extended: true, limit: \"10kb\" }));\n// Rate limiting\nconst limiter = (0, express_rate_limit_1.default)({\n    max: 1000,\n    windowMs: 60 * 60 * 1000,\n    message: \"Too many requests from this IP, please try again in an hour!\",\n});\napp.use(\"/api\", limiter);\n// Data sanitization against NoSQL query injection\napp.use((0, express_mongo_sanitize_1.default)());\n// Data sanitization against XSS\napp.use((0, xss_clean_1.default)());\n// Prevent parameter pollution\napp.use((0, hpp_1.default)({\n    whitelist: [\n        \"duration\",\n        \"ratingsQuantity\",\n        \"ratingsAverage\",\n        \"maxGroupSize\",\n        \"difficulty\",\n        \"price\",\n    ],\n}));\n// Enable CORS\napp.use((0, cors_1.default)());\napp.options(\"*\", (0, cors_1.default)());\n// Test middleware\napp.use((req, res, next) => {\n    req.requestTime = new Date().toISOString();\n    next();\n});\n// TODO: Setup Routes\n// Example: const userRoutes = require(\"./routes/userRoutes\");\napp.use(\"/api/v1/collections\", collectionsRoutes_1.default);\napp.use(\"/api/v1/images\", imagesRoutes_1.default);\napp.use(\"/api/v1/albums\", albumsRoutes_1.default);\n// app.use(\"/\", userRoutes);\n// 404 Error Handler\napp.all(\"*\", (req, res, next) => {\n    res.status(404).json({\n        status: \"fail\",\n        message: `Can't find ${req.originalUrl} on this server!`,\n    });\n});\nexports[\"default\"] = app;\n\n\n//# sourceURL=webpack://server/./src/app.ts?");
+eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst express_1 = __importDefault(__webpack_require__(/*! express */ \"express\"));\nconst express_rate_limit_1 = __importDefault(__webpack_require__(/*! express-rate-limit */ \"express-rate-limit\"));\nconst helmet_1 = __importDefault(__webpack_require__(/*! helmet */ \"helmet\"));\nconst express_mongo_sanitize_1 = __importDefault(__webpack_require__(/*! express-mongo-sanitize */ \"express-mongo-sanitize\"));\nconst xss_clean_1 = __importDefault(__webpack_require__(/*! xss-clean */ \"xss-clean\"));\nconst hpp_1 = __importDefault(__webpack_require__(/*! hpp */ \"hpp\"));\nconst cors_1 = __importDefault(__webpack_require__(/*! cors */ \"cors\"));\nconst adm_zip_1 = __importDefault(__webpack_require__(/*! adm-zip */ \"adm-zip\"));\nconst path_1 = __importDefault(__webpack_require__(/*! path */ \"path\"));\nconst aws_sdk_1 = __importDefault(__webpack_require__(/*! aws-sdk */ \"aws-sdk\"));\n// routes import\nconst collectionsRoutes_1 = __importDefault(__webpack_require__(/*! ./routes/collectionsRoutes */ \"./src/routes/collectionsRoutes.ts\"));\nconst imagesRoutes_1 = __importDefault(__webpack_require__(/*! ./routes/imagesRoutes */ \"./src/routes/imagesRoutes.ts\"));\nconst albumsRoutes_1 = __importDefault(__webpack_require__(/*! ./routes/albumsRoutes */ \"./src/routes/albumsRoutes.ts\"));\nconst app = (0, express_1.default)();\n// Set security HTTP headers\napp.use((0, helmet_1.default)());\n// Development logging\nif (true) {\n    const morgan = __webpack_require__(/*! morgan */ \"morgan\");\n    app.use(morgan(\"dev\"));\n}\n// Body parser, reading data from body into req.body\napp.use(express_1.default.json({ limit: \"10kb\" }));\napp.use(express_1.default.urlencoded({ extended: true, limit: \"10kb\" }));\n// Rate limiting\nconst limiter = (0, express_rate_limit_1.default)({\n    max: 1000,\n    windowMs: 60 * 60 * 1000,\n    message: \"Too many requests from this IP, please try again in an hour!\",\n});\napp.use(\"/api\", limiter);\n// Data sanitization against NoSQL query injection\napp.use((0, express_mongo_sanitize_1.default)());\n// Data sanitization against XSS\napp.use((0, xss_clean_1.default)());\n// Prevent parameter pollution\napp.use((0, hpp_1.default)({\n    whitelist: [\n        \"duration\",\n        \"ratingsQuantity\",\n        \"ratingsAverage\",\n        \"maxGroupSize\",\n        \"difficulty\",\n        \"price\",\n    ],\n}));\n// Enable CORS\napp.use((0, cors_1.default)());\napp.options(\"*\", (0, cors_1.default)());\n// Test middleware\napp.use((req, res, next) => {\n    req.requestTime = new Date().toISOString();\n    next();\n});\n// TODO: Setup Routes\n// Example: const userRoutes = require(\"./routes/userRoutes\");\napp.use(\"/api/v1/collections\", collectionsRoutes_1.default);\napp.use(\"/api/v1/images\", imagesRoutes_1.default);\napp.use(\"/api/v1/albums\", albumsRoutes_1.default);\n//! TODO: Setup Routes \naws_sdk_1.default.config.update({\n    accessKeyId: process.env.AWS_ACCESS_KEY,\n    secretAccessKey: process.env.AWS_SECRET_KEY,\n    region: process.env.AWS_REGION,\n});\nconst s3 = new aws_sdk_1.default.S3();\napp.post('/api/v1/compress', (req, res) => __awaiter(void 0, void 0, void 0, function* () {\n    const { files } = req.body;\n    try {\n        const zip = new adm_zip_1.default();\n        // Download files from S3 and add them to the zip archive\n        for (const filename of files) {\n            const params = {\n                Bucket: process.env.AWS_BUCKET_NAME,\n                Key: filename // Assuming filenames are keys in your S3 bucket\n            };\n            const { Body } = yield s3.getObject(params).promise();\n            zip.addFile(filename, Body);\n        }\n        const outputFilePath = path_1.default.join(__dirname, '/images.zip');\n        zip.writeZip(outputFilePath);\n        res.download(outputFilePath);\n    }\n    catch (error) {\n        console.error('Error compressing files:', error);\n        res.status(500).send('Error compressing files');\n    }\n}));\n//! TODO: Setup Routes\n// app.use(\"/\", userRoutes);\n// 404 Error Handler\napp.all(\"*\", (req, res, next) => {\n    res.status(404).json({\n        status: \"fail\",\n        message: `Can't find ${req.originalUrl} on this server!`,\n    });\n});\nexports[\"default\"] = app;\n\n\n//# sourceURL=webpack://server/./src/app.ts?");
 
 /***/ }),
 
@@ -147,6 +147,26 @@ module.exports = require("@aws-sdk/client-s3");
 /***/ ((module) => {
 
 module.exports = require("@aws-sdk/s3-request-presigner");
+
+/***/ }),
+
+/***/ "adm-zip":
+/*!**************************!*\
+  !*** external "adm-zip" ***!
+  \**************************/
+/***/ ((module) => {
+
+module.exports = require("adm-zip");
+
+/***/ }),
+
+/***/ "aws-sdk":
+/*!**************************!*\
+  !*** external "aws-sdk" ***!
+  \**************************/
+/***/ ((module) => {
+
+module.exports = require("aws-sdk");
 
 /***/ }),
 
@@ -287,6 +307,16 @@ module.exports = require("xss-clean");
 /***/ ((module) => {
 
 module.exports = require("fs");
+
+/***/ }),
+
+/***/ "path":
+/*!***********************!*\
+  !*** external "path" ***!
+  \***********************/
+/***/ ((module) => {
+
+module.exports = require("path");
 
 /***/ })
 
