@@ -7,7 +7,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageModal from '../../../components/ImageModal/ImageModal';
 import serverUrl from '../../../utils/APIUrl';
-
+import s3 from '../../../utils/AWS';
 interface Photo {
     _id: string;
     name: string;
@@ -28,6 +28,7 @@ const CollectionComponent: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
+    console.log(selectedImage);
     
     useEffect(() => {
         axios.get(`${serverUrl}/api/v1/collections/${collectionId}`)
@@ -62,19 +63,29 @@ const CollectionComponent: React.FC = () => {
         setSelectedImage(photo);
     }
 
-    const handleDownload = (photo: Photo) => {
-        console.log('Downloading image');
-        
-        axios.get(photo.url, { responseType: 'blob' }).then(response => {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = photo.filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-    }
+    const downloadImageFromS3 = async () => {
+        if (selectedImage === null) {
+            return;
+        } else {
+            const params = {
+                Bucket: import.meta.env.VITE_REACT_APP_AWS_BUCKET_NAME,
+                Key: selectedImage.filename,
+            };
+
+            try {
+                const data = await s3.getObject(params).promise();
+                const url = URL.createObjectURL(new Blob([data.Body]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'image.jpg';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (error) {
+                console.error('Error downloading image from S3:', error);
+            }
+        }
+    };
 
     return (
         <div>
@@ -94,7 +105,7 @@ const CollectionComponent: React.FC = () => {
                     open={true}
                     onClose={() => setSelectedImage(null)}
                     image={selectedImage}
-                    download={() => handleDownload(selectedImage)}
+                    download={() => downloadImageFromS3()}
                 />
             )}
         </div>
