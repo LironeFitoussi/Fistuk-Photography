@@ -42,7 +42,7 @@ const CollectionComponent: React.FC = () => {
     
     useEffect(() => {
         
-        axios.get(`${serverUrl}/api/collections/${collectionId}`)
+        axios.get(`${serverUrl}/api/v1/collections/${collectionId}`)
             .then(response => {
                 setCollection(response.data.data.collection);
                 setLoading(false);
