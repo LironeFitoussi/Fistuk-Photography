@@ -1,5 +1,5 @@
 # Init gitignore file for ts node project
 node_modules/
-dist/
+# dist/
 .env
 uploads/
