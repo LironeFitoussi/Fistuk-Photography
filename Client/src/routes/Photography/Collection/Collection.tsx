@@ -41,7 +41,7 @@ const CollectionComponent: React.FC = () => {
     console.log(collection);
     
     useEffect(() => {
-        const url = `${serverUrl}/collections/${collectionId}`;
+        const url = `${serverUrl}/api/collections/${collectionId}`;
         
         axios.get(url)
             .then(response => {
