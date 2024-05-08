@@ -1,9 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Helvetica&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
 
 body {
   margin: 0;
   padding: 0;
-  font-family: "Helvetica", sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: #f1f1f1;
 }
 
@@ -14,5 +15,11 @@ h3,
 h4,
 h5,
 h6 {
+  color: black;
+}
+
+/* remove anchor tag decoration */
+a {
+  text-decoration: none;
   color: black;
 }

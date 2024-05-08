@@ -83,7 +83,9 @@ const Photography = () => {
                     </ul> */}
                     {/* <AlbumTable albums={albums} /> */}
                     {albums.map((album: Album) => (
-                        <AlbumCard album={album} />
+                        <Link to={`/albums/${album._id}`} key={album._id}>
+                            <AlbumCard album={album} />
+                        </Link>
                     ))}
 
                 </div>

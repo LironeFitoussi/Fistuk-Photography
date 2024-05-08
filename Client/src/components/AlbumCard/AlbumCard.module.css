@@ -1,0 +1,56 @@
+.container {
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 5rem;
+}
+
+.albumCoverImage {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+}
+
+.container p {
+  margin: 0;
+  font-size: 1rem;
+  font-family: "Playfair Display", serif;
+  margin: 1rem 0;
+}
+
+.container h3 {
+  margin-bottom: 0 !important;
+  font-size: 1.5rem;
+  font-weight: 500;
+  /* font-family: "Playfair Display", serif; */
+  margin: 1rem 0;
+}
+
+/* Media Query to handle responsive styles on desktop */
+@media (min-width: 768px) {
+  .container {
+    width: 30vw;
+    height: 100%;
+    /* margin: 0 1rem !important; */
+  }
+
+  .albumCoverImage {
+    height: 30vh;
+  }
+
+  .container p {
+    font-size: 1.2rem;
+  }
+
+  .container h3 {
+    font-size: 1.8rem;
+  }
+}

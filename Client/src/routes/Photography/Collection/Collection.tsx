@@ -79,37 +79,22 @@ const CollectionComponent: React.FC = () => {
         setSelectedImage(photo);
     }
 
-    function handleDownload(photo: Photo, event: Event) {
-        event.preventDefault(); // Prevent default anchor behavior
-
-        fetch(photo.url, {
-            method: 'GET',
-            headers: new Headers({
-                'Origin': location.origin
-            }),
-            mode: 'no-cors'
-        })
-        .then(response => response.blob())
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = photo.name || 'download';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-        })
-        .catch((err: Error) => {
-            console.error('Failed to fetch image');
-            console.log(err.message);
-        });
+    function handleDownload(photo: Photo, event: React.MouseEvent<HTMLAnchorElement>) {
+        // open photos.url in a new tab
+        event.preventDefault();
+        const url = photo.url;
+        window
+            .open(url, '_blank')
+            ?.focus();
+        
+ 
     }
 
     return (
         <div className={styles.container}>
             <div className={styles.headerTextContainer}>
                 <h2>{collection.name}</h2>
+                
             </div>
                 {/* {collection.images.map((photo) => (
                     <div key={photo._id}>
@@ -131,11 +116,13 @@ const CollectionComponent: React.FC = () => {
                             loading="lazy"
                             onClick={() => openModal(item)}
                         />
+                        {/* <a href={item.url} target='_blank'>Download</a> */}
                         {/* <a href={item.url} download={item.name} onClick={(e) => handleDownload(item, e)}>
                             <span>Download</span>
                         </a> */}
                     </ImageListItem>
                 ))}
+                
             </ImageList>
             {
                 selectedImage && (

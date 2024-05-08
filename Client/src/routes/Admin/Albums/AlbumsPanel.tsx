@@ -34,6 +34,7 @@ const AlbumsPanel: React.FC = () => {
             name: formData.get('name') as string,
             date: formData.get('date') as string,
             location: formData.get('location') as string,
+            description: formData.get('description') as string,
         };
         console.log(newAlbum);
         // Post to server in async function
@@ -90,6 +91,8 @@ const AlbumsPanel: React.FC = () => {
                         <input type="text" id="artist" name="date" />
                         <label htmlFor="location">Location</label>
                         <input type="text" id="location" name="location" />
+                        <label htmlFor="description">Description</label>
+                        <input type="text" id="description" name="description" />
                         <button type="submit">Create Album</button>
                     </form>
                 </div>
