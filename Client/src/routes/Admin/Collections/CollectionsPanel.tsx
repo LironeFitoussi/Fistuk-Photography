@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-
+import serverUrl from '../../../utils/APIUrl';
 interface CollectionsPanelProps {
     // Add any additional props here if needed
 }
@@ -26,7 +26,7 @@ const CollectionsPanel: React.FC<CollectionsPanelProps> = () => {
     useEffect(() => {
         const fetchAlbums = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/v1/albums');
+                const response = await axios.get(`${serverUrl}/api/v1/albums`);
                 setAlbums(response.data.data.albums);
             } catch (error: any) {
                 console.error(error);
@@ -43,7 +43,7 @@ const CollectionsPanel: React.FC<CollectionsPanelProps> = () => {
             const albumName = albumNameRef.current.value;
 
             try {
-                const response = await axios.post('http://localhost:3000/api/v1/collections', {
+                const response = await axios.post(`${serverUrl}/api/v1/collections`, {
                     name: collectionName,
                     albumId: albumName,
                 });

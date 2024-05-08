@@ -2,6 +2,7 @@ import stlyes from './AlbumsPanel.module.css';
 import React, {useEffect} from 'react';
 import axios from 'axios';
 import AdminTable from '../../../components/AdminTable';
+import serverUrl from '../../../utils/APIUrl';
 interface Album {
     id: number;
     title: string;
@@ -15,7 +16,7 @@ const AlbumsPanel: React.FC = () => {
     // Fetch Albums from  server usinx axios in a async function
     const fetchAlbums = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/api/v1/albums');
+            const response = await axios.get(`${serverUrl}/api/v1/albums`);
             // console.log(response.data.data.albums);
 
             // Set the state of the albums here
@@ -40,7 +41,7 @@ const AlbumsPanel: React.FC = () => {
         // Post to server in async function
         const postNewAlbum = async () => {
             try {
-                const response = await axios.post('http://localhost:3000/api/v1/albums', newAlbum);
+                const response = await axios.post(`${serverUrl}/api/v1/albums`, newAlbum);
                 console.log(response);
                 fetchAlbums();
             } catch (error) {

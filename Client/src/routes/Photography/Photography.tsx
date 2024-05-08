@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import AlbumCard from '../../components/AlbumCard/AlbumCard';
 import { Collection } from '../../types/interfaces';
 import { Album } from '../../types/interfaces';
+import serverUrl from '../../utils/APIUrl';
+
 const Photography = () => {
     const [activeLink, setActiveLink] = useState('albums');
     const [collections, setCollections] = useState([]);
@@ -21,7 +23,7 @@ const Photography = () => {
         // Fetch collections in async function
         const collections = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/v1/collections');
+                const response = await axios.get(`${serverUrl}/api/v1/collections`);
                 // console.log(response.data.data.collections);
                 setCollections(response.data.data.collections);
             } catch (error) {
@@ -37,7 +39,7 @@ const Photography = () => {
         // Fetch Albums in async function
         const albums = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/v1/albums');
+                const response = await axios.get(`${serverUrl}/api/v1/albums`);
                 // console.log(response.data.data.albums);
                 setAlbums(response.data.data.albums);
             } catch (error) {

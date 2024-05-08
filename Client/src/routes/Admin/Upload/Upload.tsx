@@ -1,7 +1,7 @@
 import styles from './Upload.module.css';
 import { useState, useRef, FormEvent, ChangeEvent, useEffect } from 'react';
 import axios from 'axios';
-
+import serverUrl from '../../../utils/APIUrl';
 interface ImageData {
     result: any;
     image: string;
@@ -67,7 +67,7 @@ function PostImage() {
         formData.append("collectionName", collectionName); // Using collectionName as the description
 
         try {
-            const result = await axios.post<ApiResponse>('http://localhost:3000/api/v1/images', formData, {
+            const result = await axios.post<ApiResponse>(`${serverUrl}/api/v1/images`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             return result.data.results;
@@ -80,7 +80,7 @@ function PostImage() {
     useEffect(() => {
         const fetchCollections = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/v1/collections');
+                const response = await axios.get(`${serverUrl}/api/v1/collections`);
                 setCollections(response.data.data.collections);
             } catch (error: any) {
                 console.error(error);

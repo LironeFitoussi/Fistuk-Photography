@@ -12,6 +12,8 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 
 import ImageModal from '../../../components/ImageModal/ImageModal';
+
+import serverUrl from '../../../utils/APIUrl';
 interface Photo {
     _id: string;
     name: string;
@@ -30,14 +32,11 @@ interface Collection {
 //     collectionId: string;
 // }
 
-type URLType = string | boolean;
-
 const CollectionComponent: React.FC = () => {
     const { collectionId } = useParams();
     const [collection, setCollection] = useState<Collection | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const serverUrl: URLType = import.meta.env.VITE_SERVER_URL || false;
     const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
     console.log(collection);
     
