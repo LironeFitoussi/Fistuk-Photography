@@ -24,7 +24,7 @@ export default function Navbar() {
   };
 
   const menuItems: MenuItem[] = [
-    { name: "Home", link: "/home" },
+    { name: "Home", link: "/" },
     { name: "Photography", link: "/photography" },
     // Check VITE_MODE and if development, add the following menu items
     ...(import.meta.env.VITE_MODE === 'development' ? [
