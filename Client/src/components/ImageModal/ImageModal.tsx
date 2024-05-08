@@ -46,7 +46,7 @@ const ImageModal: React.FC<BasicModalProps> = ({ open, onClose, image, download 
         <div className={styles.actions}>
             <Button onClick={onClose} sx={buttonStyle}>
                 <IoReturnUpBack  />
-                {/* <a href={image.url} download>downoad</a> */}
+                {/* <a href={image.url} download='new-image'>downoad</a> */}
             </Button>
             <Button onClick={download} sx={buttonStyle}>  
                 <IoDownloadOutline />

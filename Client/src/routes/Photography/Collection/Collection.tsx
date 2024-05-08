@@ -1,19 +1,13 @@
-import styles from './Collection.module.css';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
-// import of MUI components
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-
-// import ImagesGrid from '../../../components/ImagesGrid';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-
 import ImageModal from '../../../components/ImageModal/ImageModal';
-
 import serverUrl from '../../../utils/APIUrl';
+
 interface Photo {
     _id: string;
     name: string;
@@ -28,20 +22,14 @@ interface Collection {
     images: Photo[];
 }
 
-// interface CollectionParams {
-//     collectionId: string;
-// }
-
 const CollectionComponent: React.FC = () => {
     const { collectionId } = useParams();
     const [collection, setCollection] = useState<Collection | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
-    console.log(collection);
     
     useEffect(() => {
-        
         axios.get(`${serverUrl}/api/v1/collections/${collectionId}`)
             .then(response => {
                 setCollection(response.data.data.collection);
@@ -74,59 +62,41 @@ const CollectionComponent: React.FC = () => {
         setSelectedImage(photo);
     }
 
-    // function handleDownload(photo: Photo, event: React.MouseEvent<HTMLAnchorElement>) {
-    //     // open photos.url in a new tab
-    //     event.preventDefault();
-    //     const url = photo.url;
-    //     window
-    //         .open(url, '_blank')
-    //         ?.focus();
-    // }
+    const handleDownload = (photo: Photo) => {
+        console.log('Downloading image');
+        
+        axios.get(photo.url, { responseType: 'blob' }).then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = photo.filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.headerTextContainer}>
-                <h2>{collection.name}</h2>
-                
-            </div>
-                {/* {collection.images.map((photo) => (
-                    <div key={photo._id}>
-                        <img src={photo.url} alt={photo.name} />
-                        <p>{photo.name}</p>
-                        <a href={photo.url} download={photo.name} onClick={(e) => handleDownload(photo, e)}>
-                            <span>Download</span>
-                        </a>
-                    </div>
-                ))} */}
-            {/* <ImagesGrid /> */}
-            <ImageList sx={{ width: '90vw', height: '80%' }} variant="woven" cols={2} gap={8}>
+        <div>
+            <ImageList>
                 {collection.images.map((item) => (
                     <ImageListItem key={item.filename}>
                         <img
-                            srcSet={`${item.url}`}
-                            src={`${item.url}`}
+                            src={item.url}
                             alt={item.name}
-                            loading="lazy"
                             onClick={() => openModal(item)}
                         />
-                        {/* <a href={item.url} target='_blank'>Download</a> */}
-                        {/* <a href={item.url} download={item.name} onClick={(e) => handleDownload(item, e)}>
-                            <span>Download</span>
-                        </a> */}
                     </ImageListItem>
                 ))}
-                
             </ImageList>
-            {
-                selectedImage && (
-                    <ImageModal
-                        open={true}
-                        onClose={() => setSelectedImage(null)}
-                        image={selectedImage}
-                        // download={() => handleDownload(selectedImage)}
-                    />
-                )
-            }
+            {selectedImage && (
+                <ImageModal
+                    open={true}
+                    onClose={() => setSelectedImage(null)}
+                    image={selectedImage}
+                    download={() => handleDownload(selectedImage)}
+                />
+            )}
         </div>
     );
 };
