@@ -105,8 +105,13 @@ app.post('/api/v1/compress', async (req, res) => {
                 Bucket: process.env.AWS_BUCKET_NAME as string,
                 Key: filename // Assuming filenames are keys in your S3 bucket
             };
-            const { Body } = await s3.getObject(params).promise();
-            zip.addFile(filename, Body);
+            const data = await s3.getObject(params).promise();
+            const body = data.Body as Buffer | undefined; // Type assertion
+            if (body) {
+                zip.addFile(filename, body);
+            } else {
+                console.warn(`Body is undefined for file ${filename}`);
+            }
         }
 
         const outputFilePath = path.join(__dirname, '/images.zip');
