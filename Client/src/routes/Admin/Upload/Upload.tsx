@@ -32,6 +32,7 @@ function PostImage() {
     const [uploadSuccess, setUploadSuccess] = useState(false);
     const [collections, setCollections] = useState<Collection[]>([]);
 
+
     const submit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault();
         if (files.length === 0 || !collectionInputRef.current) return;
@@ -50,6 +51,7 @@ function PostImage() {
             setError("Failed to upload images.");
         } finally {
             setUploading(false);
+            collectionInputRef.current.value = "";
         }
     };
 

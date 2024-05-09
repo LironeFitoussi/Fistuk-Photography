@@ -56,9 +56,6 @@ const ImageModal: React.FC<BasicModalProps> = ({ open, onClose, image, download 
           Name: {image.name}
         </Typography>
         <img src={image.url} alt={image.name} className={styles.image} /> {/* Adding an alt tag */}
-        <Typography sx={{ mt: 1 }} className={styles.textWrap}>
-          Message: {image.filename}
-        </Typography>
       </Box>
     </Modal>
   );

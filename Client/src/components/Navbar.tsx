@@ -11,7 +11,7 @@ interface MenuItem {
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  // const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const theme: Theme = useTheme();
   const isDesktop: boolean = useMediaQuery(theme.breakpoints.up('md')); // 'md' breakpoint typically starts at 768px
 
@@ -43,9 +43,9 @@ export default function Navbar() {
       onClose={toggleMenu}
       PaperProps={{ sx: { width: "50%" } }}
     >
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <img 
-          className={styles.mainLogo} src={isScrolled ? '/light-logo.png' : '/logo.png'}
+          className={styles.mainLogo} src={'/light-logo.png'}
           alt="Lirone Fitoussi Development" 
         />
       </Box>
@@ -78,29 +78,29 @@ export default function Navbar() {
 
   // console.log(window.innerHeight);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // console.log(window.scrollY);
-      const vhToPixels = (vh: number): number => {
-        const windowHeight = window.innerHeight;
-        return (vh / 100) * windowHeight;
-      };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     // console.log(window.scrollY);
+  //     const vhToPixels = (vh: number): number => {
+  //       const windowHeight = window.innerHeight;
+  //       return (vh / 100) * windowHeight;
+  //     };
 
-      const convertedPixels = vhToPixels(80);
-      // console.log(convertedPixels);
-      if (window.scrollY >= convertedPixels) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
+  //     const convertedPixels = vhToPixels(80);
+  //     // console.log(convertedPixels);
+  //     if (window.scrollY >= convertedPixels) {
+  //       setIsScrolled(true);
+  //     } else {
+  //       setIsScrolled(false);
+  //     }
+  //   };
 
-    window.addEventListener('scroll', handleScroll);
+  //   window.addEventListener('scroll', handleScroll);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
 
   return (
     <Box
@@ -114,7 +114,7 @@ export default function Navbar() {
       <AppBar
         position="static"
         sx={{
-          backgroundColor: `${isScrolled ? '#00162f' : '#fff'}`,
+          backgroundColor: '#fff',
           color: 'black',
           boxShadow: "none",
           transition: "background-color 0.3s ease-in-out", // Add transition to background-color
@@ -125,7 +125,7 @@ export default function Navbar() {
             <IconButton
               sx={{ 
                 position: 'absolute', mr: 2, 
-                color: `${isScrolled ? '#fff' : '#00162f'}`,
+                color: '#000',
               }}
               size="large"
               edge="start"
@@ -138,7 +138,7 @@ export default function Navbar() {
           )}
           <Typography variant="h6" component="div" align='center' sx={{ flexGrow: 1 }}>
             <img 
-              className={styles.mainLogo} src={isScrolled ? '/light-logo.png' : '/logo.png'}
+              className={styles.mainLogo} src='/light-logo.png'
               alt="Lirone Fitoussi Development" 
             />
           </Typography>

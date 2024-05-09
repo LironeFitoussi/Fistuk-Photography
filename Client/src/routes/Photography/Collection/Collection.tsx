@@ -1,3 +1,4 @@
+import styles from './Collection.module.css';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -8,6 +9,8 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageModal from '../../../components/ImageModal/ImageModal';
 import serverUrl from '../../../utils/APIUrl';
 import s3 from '../../../utils/AWS';
+import { Collection } from '../../../types/interfaces';
+
 interface Photo {
     _id: string;
     name: string;
@@ -17,134 +20,111 @@ interface Photo {
     url: string;
 }
 
-interface Collection {
-    name: string;
-    images: Photo[];
-}
-
 const CollectionComponent: React.FC = () => {
-    const { collectionId } = useParams();
+    const { collectionId } = useParams<{ collectionId: string }>();
     const [collection, setCollection] = useState<Collection | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
-    const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
+    const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
 
-    // console.log(selectedImage);
-    // console.log(selectedFiles);
-    
     useEffect(() => {
-        axios.get(`${serverUrl}/api/v1/collections/${collectionId}`)
-            .then(response => {
+        const fetchCollection = async () => {
+            try {
+                const response = await axios.get(`${serverUrl}/api/v1/collections/${collectionId}`);
                 setCollection(response.data.data.collection);
                 setLoading(false);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error fetching collection', error);
                 setError('Failed to fetch collection');
                 setLoading(false);
-            });
-    }, [collectionId, serverUrl]);
+            }
+        };
 
-    useEffect(() => { 
-        // console.log('Collection:', collection);
-        if (collection) {
-            const files = collection.images.map((image) => image.filename);
-            // console.log('Selected files:', files);
-            setSelectedFiles(files);
-        }
-    }, [collection]);
+        fetchCollection();
+    }, [collectionId]);
 
-    if (loading) {
-        return (
-            <Box sx={{ display: 'flex' }}>
-                <CircularProgress />
-            </Box>
-        )
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-
-    if (!collection) {
-        return <div>No collection found.</div>;
-    }
+    const handleImageLoad = () => {
+        setLoading(false);
+    };
 
     const openModal = (photo: Photo) => {
         setSelectedImage(photo);
-    }
+    };
 
-
-    const handleFullCollectionDownload = async () => {
+    const downloadImageFromS3 = async () => {
         try {
-            const response = await axios.post(`${serverUrl}/api/v1/compress`, { files: selectedFiles }, { responseType: 'blob' });
-            const url = URL.createObjectURL(response.data);
+            const params = {
+                Bucket: import.meta.env.VITE_REACT_APP_AWS_BUCKET_NAME,
+                Key: selectedImage!.filename,
+            };
+            const data = await s3.getObject(params).promise();
+            const url = URL.createObjectURL(new Blob([data.Body]));
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'images.rar';
+            link.download = 'LironeFitoussiPhotographer_' + selectedImage!.name;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         } catch (error) {
-            console.error('Error downloading RAR archive:', error);
+            console.error('Error downloading image from S3:', error);
         }
     };
 
-
-    const downloadImageFromS3 = async () => {
-        if (selectedImage === null) {
-            return;
-        } else {
-            const params = {
-                Bucket: import.meta.env.VITE_REACT_APP_AWS_BUCKET_NAME,
-                Key: selectedImage.filename,
-            };
-
-            try {
-                const data = await s3.getObject(params).promise();
-                const url = URL.createObjectURL(new Blob([data.Body]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'LironeFitoussiPhotographer_' + selectedImage.filename ;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } catch (error) {
-                console.error('Error downloading image from S3:', error);
-            }
-        }
+    const handleFullCollectionDownload = () => {
+        window.location.href = collection?.googleDriveLink ?? '';
     };
 
+    // use effect to detect screen size change and update the state
+    useEffect(() => {
+        const handleResize = () => {
+            setScreenWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     return (
-        <div>
-            <ImageList>
-                {collection.images.map((item) => (
-                    <ImageListItem key={item.filename}>
-                        <img
-                            src={item.url}
-                            alt={item.name}
-                            onClick={() => openModal(item)}
+        <div className={styles.container}>
+            {loading ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                    <CircularProgress />
+                </Box>
+            ) : error ? (
+                <div>Error: {error}</div>
+            ) : !collection ? (
+                <div>No collection found.</div>
+            ) : (
+                <>
+                    <h1 className={styles.title}>{collection.name}</h1>
+                    <ImageList cols={
+                        // check the screen width and set the number of columns accordingly
+                        screenWidth > 1200 ? 5 : screenWidth > 800 ? 4 : 2
+                    } gap={8}>
+                        {collection.images.map((item) => (
+                            <ImageListItem key={item.filename}>
+                                <img
+                                    src={item.url}
+                                    alt={item.name}
+                                    onClick={() => openModal(item)}
+                                    onLoad={handleImageLoad}
+                                />
+                            </ImageListItem>
+                        ))}
+                    </ImageList>
+                    {selectedImage && (
+                        <ImageModal
+                            open={true}
+                            onClose={() => setSelectedImage(null)}
+                            image={selectedImage}
+                            download={downloadImageFromS3}
                         />
-                    </ImageListItem>
-                ))}
-            </ImageList>
-            {selectedImage && (
-                <ImageModal
-                    open={true}
-                    onClose={() => setSelectedImage(null)}
-                    image={selectedImage}
-                    download={() => downloadImageFromS3()}
-                />
+                    )}
+                    <button className={styles.driveBtn} onClick={handleFullCollectionDownload}>
+                        Download full collection
+                    </button>
+                </>
             )}
-
-            {/* Button to download full collection */}
-            <button onClick={() => {
-                console.log('Download full collection')
-                handleFullCollectionDownload();    
-            }}>
-                Download full collection
-            </button>
         </div>
     );
 };

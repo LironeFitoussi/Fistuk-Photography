@@ -33,8 +33,6 @@ export const getAllCollections = async (req: Request, res: Response) => {
     }
 };
 
-
-
 // GET collection by ID
 export const getCollectionById = async (req: Request, res: Response) => {
     try {
@@ -68,7 +66,6 @@ export const getCollectionById = async (req: Request, res: Response) => {
         }
     }
 };
-
 
 // POST create a new collection
 export const createCollection = async (req: Request, res: Response) => {
@@ -123,6 +120,43 @@ export const deleteCollection = async (req: Request, res: Response) => {
         res.status(204).json({
             status: 'success',
             data: null,
+        });
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            res.status(404).json({
+                status: 'fail',
+                message: err.message,
+            });
+        } else {
+            res.status(500).json({
+                status: 'fail',
+                message: 'An unexpected error occurred'
+            });
+        }
+    }
+};
+
+// PATCH update a collection's Google Drive link
+export const updateCollection = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { googleDriveLink } = req.body;
+        const collection = await Collection.findByIdAndUpdate(id, { googleDriveLink: googleDriveLink }, { new: true });
+
+        console.log(googleDriveLink);
+        
+        if (!collection) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No collection found with that ID'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                collection,
+            },
         });
     } catch (err: unknown) {
         if (err instanceof Error) {

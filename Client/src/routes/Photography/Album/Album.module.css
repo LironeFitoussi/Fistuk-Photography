@@ -6,3 +6,11 @@
   margin-top: 20px;
   align-self: center;
 }
+
+/* sceen above 768 media query */
+@media (min-width: 768px) {
+  .container {
+    width: 80vw;
+    /* background-color: yellow; */
+  }
+}

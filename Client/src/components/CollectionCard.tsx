@@ -5,11 +5,27 @@ import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import { Collection } from '../types/interfaces';
 import { Link } from 'react-router-dom';
+import { FaEye } from "react-icons/fa";
+import {useState, useEffect} from 'react';
 interface CollectionCardProps {
     collection: Collection;
 }
 // export default function CollectionCard() {
 const CollectionCard: React.FC<CollectionCardProps> = ({collection}) => {
+  // handle screen size change with useState and useEffect
+  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+  
+  // use Effect to handle screen size change
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }
+  , []);
+
     console.log(collection);
     
     // validation of image cover for the collection
@@ -17,12 +33,27 @@ const CollectionCard: React.FC<CollectionCardProps> = ({collection}) => {
   return (
     <Card sx={{
         width: '65vw',
-        margin: '10px'
+        margin: '10px',
+        '&:hover': {
+          boxShadow: '0 0 10px rgba(0,0,0,0.5)',
+          cursor: 'pointer'
+        },
+        // mdia query at screen 768>
+        '@media (min-width: 768px)': {
+          width: '25vw'
+        }
      }}>
-      <CardActionArea>
+      <CardActionArea sx={{
+        // cancel any styling on hover
+        '&:hover': {
+          backgroundColor: 'transparent',
+          cursor: 'default'
+        }
+      }}>
         <CardMedia
           component="img"
-          height="140"
+          // on small screens, the height of the image is 250px and on larger screens, the height is 500px
+          height={screenWidth > 768 ? 500 : 250}
           image={imageUrl}
           alt="green iguana"
         />
@@ -30,17 +61,24 @@ const CollectionCard: React.FC<CollectionCardProps> = ({collection}) => {
           <Typography gutterBottom variant="h5" component="div">
             {collection.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            TODO: Add description
-          </Typography>
+          <Link to={`/collections/${collection._id}`}>
+            
+          </Link>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
-            <Link to={`/collections/${collection._id}`}>
-                VIEW
-            </Link>
-        </Button>
+        <Link to={`/collections/${collection._id}`}>
+          <Button size="large" sx={{
+            marginLeft: 'auto',
+            backgroundColor: '#107AB0',
+            '&:hover': {
+              backgroundColor: '#107AB0'
+            },
+          }}>
+            <FaEye color='white'/> 
+          </Button>
+        </Link>
+        
       </CardActions>
     </Card>
   );

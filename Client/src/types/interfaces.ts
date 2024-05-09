@@ -7,6 +7,7 @@ export interface Collection {
     __v: number;
     _id: string;
     imageCover?: string;
+    googleDriveLink?: string;
 }
 
 export interface Photo {

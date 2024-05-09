@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import serverUrl from '../../../utils/APIUrl';
+import { Collection } from '../../../types/interfaces';
 interface CollectionsPanelProps {
     // Add any additional props here if needed
 }
@@ -15,13 +16,25 @@ const CollectionsPanel: React.FC<CollectionsPanelProps> = () => {
     const albumNameRef = useRef<HTMLInputElement>(null);
 
     const [albums, setAlbums] = useState<Album[]>([]);
+    const [collections, setCollections] = useState<Collection[]>([]);
     const [error, setError] = useState<string | null>(null);
 
-    const dummyAlbums = [
+    const dummyAlbums: Album[] = [
         { _id: '1', name: 'Album 1' },
         { _id: '2', name: 'Album 2' },
         { _id: '3', name: 'Album 3' },
     ];
+
+        const fetchCollections = async () => {
+        try {
+            const response = await axios.get(`${serverUrl}/api/v1/collections`);
+            // console.log(response.data.data.collections);
+            setCollections(response.data.data.collections);
+        } catch (error) {
+            console.error(error);
+            setError('Failed to fetch collections');
+        }
+    }
 
     useEffect(() => {
         const fetchAlbums = async () => {
@@ -35,6 +48,36 @@ const CollectionsPanel: React.FC<CollectionsPanelProps> = () => {
         };
         fetchAlbums();
     }, []);
+
+    useEffect(() => {
+        // fetch collections from server
+        fetchCollections();
+    }, [albums]);
+
+    // patch request to update Google Drive link
+    const handleGoogleDriveLinkUpdate = async (e: React.FormEvent<HTMLFormElement>, collectionId: string) => {
+        e.preventDefault();
+        const formData = new FormData(e.target as HTMLFormElement);
+
+        const googleDriveLink = formData.get('googleDriveLink');
+
+        if (!googleDriveLink) {
+            setError('Google Drive Link is required');
+            throw new Error('Google Drive Link is required');
+        }
+        
+        console.log(googleDriveLink);
+        try {
+            const response = await axios.patch(`${serverUrl}/api/v1/collections/${collectionId}`, {
+                googleDriveLink,
+            });
+            console.log(response.data.data);
+            console.log('Google Drive Link updated successfully');
+        } catch (error) {
+            console.error(error);
+            setError('Failed to update Google Drive Link');
+        }
+    };
 
     const handleCollectionSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -51,10 +94,11 @@ const CollectionsPanel: React.FC<CollectionsPanelProps> = () => {
                 // Rest fields
                 collectionNameRef.current.value = '';
                 albumNameRef.current.value = '';
-                alert('Collection created successfully');
+                console.log('Collection created successfully');
+                fetchCollections()
             } catch (error: any) {
                 console.error(error.response.data.message);
-                // setError(error.response.data.message);
+                setError(error.response.data.message);
             }
         }
     };
@@ -74,6 +118,40 @@ const CollectionsPanel: React.FC<CollectionsPanelProps> = () => {
                 </datalist>
                 <button type="submit">Create Collection</button>
             </form>
+
+            <div>
+                <h2>Collections</h2>
+                <ul>
+                    {collections.map(collection => (
+                        <li key={collection._id}>
+                            <p>{collection.name}</p>
+                            {/* form to update collecrtion's Google Drive Link */}
+                            <form onSubmit={(e) => handleGoogleDriveLinkUpdate(e, collection._id)}>
+                                <input type="text" placeholder="Google Drive Link" name='googleDriveLink' />
+                                {collection.googleDriveLink ? <button type="submit" style={{
+                                    backgroundColor: 'green',
+                                    color: 'white',
+                                    padding: '5px 10px',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    borderRadius: '5px'
+                                }}>Update</button> : 
+                                <button type="submit" style={{
+                                    backgroundColor: 'red',
+                                    color: 'white',
+                                    padding: '5px 10px',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    borderRadius: '5px'
+                                }}>Add</button>
+                                }
+                                {error && <div>{error}</div>}
+                            </form>
+                        </li>
+
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };

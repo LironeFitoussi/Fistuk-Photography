@@ -2,7 +2,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  height: 90vh;
+  height: 75vh;
   transform: translate(-50%, -50%);
   width: 80%; /* Adjusted for better responsiveness */
   /* background-color: var(--mui-palette-background-paper); */
@@ -22,7 +22,9 @@
 
 .image {
   width: 100%; /* Makes the image responsive */
-  height: auto; /* Maintains aspect ratio */
+  /* Ensures the image is not stretched */
+  object-fit: contain;
+  height: 60vh; /* Maintains aspect ratio */
   margin-top: 12px; /* Space between the image and text above */
   border-radius: 8px; /* Optional: Adds rounded corners to the image */
 }
