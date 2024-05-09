@@ -12,7 +12,7 @@ export default defineConfig({
   ],
   build: {
     // Adjust the asset chunk size limit (in bytes)
-    assetsInlineLimit: 1000000, // Set the limit to 1 MB (1000 kB)
+    assetsInlineLimit: 5000000, // Set the limit to 1 MB (1000 kB)
   },
   optimizeDeps: {
     include: ['lodash', 'axios'],

@@ -1,5 +1,5 @@
 import styles from './Navbar.module.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { AppBar, Box, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText, useMediaQuery, useTheme, Theme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';

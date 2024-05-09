@@ -73,7 +73,7 @@ const CollectionsPanel: React.FC<CollectionsPanelProps> = () => {
             });
             // console.log(response.data.data);
             console.log('Google Drive Link updated successfully');
-            e.target.reset();
+            formData.reset();
             fetchCollections();
         } catch (error) {
             console.error(error);
