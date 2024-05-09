@@ -25,7 +25,7 @@ const CollectionsPanel: React.FC<CollectionsPanelProps> = () => {
         { _id: '3', name: 'Album 3' },
     ];
 
-        const fetchCollections = async () => {
+    const fetchCollections = async () => {
         try {
             const response = await axios.get(`${serverUrl}/api/v1/collections`);
             // console.log(response.data.data.collections);
@@ -68,11 +68,13 @@ const CollectionsPanel: React.FC<CollectionsPanelProps> = () => {
         
         console.log(googleDriveLink);
         try {
-            const response = await axios.patch(`${serverUrl}/api/v1/collections/${collectionId}`, {
+            await axios.patch(`${serverUrl}/api/v1/collections/${collectionId}`, {
                 googleDriveLink,
             });
-            console.log(response.data.data);
+            // console.log(response.data.data);
             console.log('Google Drive Link updated successfully');
+            e.target.reset();
+            fetchCollections();
         } catch (error) {
             console.error(error);
             setError('Failed to update Google Drive Link');

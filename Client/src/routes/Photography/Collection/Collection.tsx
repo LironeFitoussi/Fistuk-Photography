@@ -72,7 +72,7 @@ const CollectionComponent: React.FC = () => {
     };
 
     const handleFullCollectionDownload = () => {
-        window.location.href = collection?.googleDriveLink ?? '';
+        window.open(collection?.googleDriveLink ?? '', '_blank');
     };
 
     // use effect to detect screen size change and update the state
