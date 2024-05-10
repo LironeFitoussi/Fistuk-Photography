@@ -2,6 +2,7 @@ import styles from './Collection.module.css';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import AWS from 'aws-sdk';
 
 const CircularProgress = React.lazy(() => import('@mui/material/CircularProgress'));
 const Box = React.lazy(() => import('@mui/material/Box'));
@@ -10,7 +11,6 @@ const ImageListItem = React.lazy(() => import('@mui/material/ImageListItem'));
 const ImageModal = React.lazy(() => import('../../../components/ImageModal/ImageModal'));
 
 import serverUrl from '../../../utils/APIUrl';
-import s3 from '../../../utils/AWS';
 import { Collection } from '../../../types/interfaces';
 
 interface Photo {
@@ -23,6 +23,13 @@ interface Photo {
 }
 
 const CollectionComponent: React.FC = () => {
+    AWS.config.update({
+        accessKeyId: import.meta.env.VITE_REACT_APP_AWS_ACCESS_KEY_ID, // Use environment variables or securely store credentials
+        secretAccessKey: import.meta.env.VITE_REACT_APP_AWS_SECRET_ACCESS_KEY,
+        region: import.meta.env.VITE_REACT_APP_AWS_REGION,
+    });
+    const s3 = new AWS.S3();
+
     const { collectionId } = useParams<{ collectionId: string }>();
     const [collection, setCollection] = useState<Collection | null>(null);
     const [loading, setLoading] = useState(true);
