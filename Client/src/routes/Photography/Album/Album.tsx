@@ -1,7 +1,8 @@
 import styles from './Album.module.css';
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import CollectionCard from '../../../components/CollectionCard';
+const CollectionCard = React.lazy(() => import('../../../components/CollectionCard'));
+
 import { Collection } from '../../../types/interfaces';
 import serverUrl from '../../../utils/APIUrl';
 interface AlbumProps {

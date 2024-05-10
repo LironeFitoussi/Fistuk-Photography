@@ -1,7 +1,9 @@
 import stlyes from './AlbumsPanel.module.css';
 import React, {useEffect} from 'react';
 import axios from 'axios';
-import AdminTable from '../../../components/AdminTable';
+
+const AdminTable = React.lazy(() => import('../../../components/AdminTable'));
+
 import serverUrl from '../../../utils/APIUrl';
 
 const AlbumsPanel: React.FC = () => {

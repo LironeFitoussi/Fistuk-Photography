@@ -1,10 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import styles from './Photography.module.css';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 // import AlbumTable from '../../components/AlbumTable';
-import AlbumCard from '../../components/AlbumCard/AlbumCard';
+const AlbumCard = React.lazy(() => import('../../components/AlbumCard/AlbumCard'));
+
 // import { Collection } from '../../types/interfaces';
 import { Album } from '../../types/interfaces';
 import serverUrl from '../../utils/APIUrl';

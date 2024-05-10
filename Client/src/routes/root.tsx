@@ -1,6 +1,7 @@
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer/Footer';
+const Navbar = React.lazy(() => import('../components/Navbar'));
+const Footer = React.lazy(() => import('../components/Footer/Footer'));
 const Root: React.FC = () => {
   
   return (
