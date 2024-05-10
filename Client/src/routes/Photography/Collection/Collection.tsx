@@ -37,7 +37,7 @@ const CollectionComponent: React.FC = () => {
     const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
     const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
     const [loadedImages, setLoadedImages] = useState([]);
-
+    const [downloading, setDownloading] = useState(false);
 
     useEffect(() => {
         const fetchCollection = async () => {
@@ -63,6 +63,7 @@ const CollectionComponent: React.FC = () => {
     };
 
     const downloadImage = async (filename: string) => {
+        setDownloading(true);
         try {
             const fileName = filename
             const response = await axios.get(`${serverUrl}/api/v1/images/downloadImage/?fileName=${fileName}`, {
@@ -74,6 +75,7 @@ const CollectionComponent: React.FC = () => {
             link.setAttribute('download', `LironeFitoussiPhotography_${fileName}`);
             document.body.appendChild(link);
             link.click();
+            setDownloading(false);
         } catch (error) {
             console.error('Error downloading file:', error);
         }
@@ -150,10 +152,11 @@ const CollectionComponent: React.FC = () => {
                             onClose={() => setSelectedImage(null)}
                             image={selectedImage}
                             download={() => downloadImage(selectedImage.filename)}
+                            downloading={downloading}
                         />
                     )}
                     <button className={styles.driveBtn} onClick={handleFullCollectionDownload}>
-                        Download full collection
+                        Download Collection
                     </button>
                 </>
             )}

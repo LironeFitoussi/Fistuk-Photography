@@ -5,8 +5,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import styles from './ImageModal.module.css'; // Import the CSS module
 import { IoDownloadOutline, IoReturnUpBack  } from "react-icons/io5";
-
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface Photo {
     _id: string;
@@ -22,9 +21,10 @@ interface BasicModalProps {
   onClose: () => void;
   image: Photo;
   download?: () => void;
+  downloading: boolean;
 }
 
-const ImageModal: React.FC<BasicModalProps> = ({ open, onClose, image, download }) => {
+const ImageModal: React.FC<BasicModalProps> = ({ open, onClose, image, download, downloading }) => {
     const buttonStyle = {
         color: 'black',
         backgroundColor: 'white',
@@ -48,8 +48,10 @@ const ImageModal: React.FC<BasicModalProps> = ({ open, onClose, image, download 
                 <IoReturnUpBack  />
                 {/* <a href={image.url} download='new-image'>downoad</a> */}
             </Button>
-            <Button onClick={download} sx={buttonStyle}>  
-                <IoDownloadOutline />
+            <Button 
+              onClick={download} 
+              sx={buttonStyle}>  
+                {downloading ? <CircularProgress /> : <IoDownloadOutline />}
             </Button>
         </div>
         <Typography id="modal-modal-description" sx={{ mt: 2 }} className={styles.textWrap}>
