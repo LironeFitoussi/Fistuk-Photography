@@ -2,7 +2,6 @@ import styles from './Collection.module.css';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import AWS from 'aws-sdk';
 
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -23,13 +22,6 @@ interface Photo {
 }
 
 const CollectionComponent: React.FC = () => {
-    AWS.config.update({
-        accessKeyId: import.meta.env.VITE_REACT_APP_AWS_ACCESS_KEY_ID, // Use environment variables or securely store credentials
-        secretAccessKey: import.meta.env.VITE_REACT_APP_AWS_SECRET_ACCESS_KEY,
-        region: import.meta.env.VITE_REACT_APP_AWS_REGION,
-    });
-    const s3 = new AWS.S3();
-
     const { collectionId } = useParams<{ collectionId: string }>();
     const [collection, setCollection] = useState<Collection | null>(null);
     const [loading, setLoading] = useState(true);
@@ -61,23 +53,21 @@ const CollectionComponent: React.FC = () => {
         setSelectedImage(photo);
     };
 
-    const downloadImageFromS3 = async () => {
-        try {
-            const params = {
-                Bucket: import.meta.env.VITE_REACT_APP_AWS_BUCKET_NAME,
-                Key: selectedImage!.filename,
-            };
-            const data = await s3.getObject(params).promise();
-            const url = URL.createObjectURL(new Blob([data.Body]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'LironeFitoussiPhotographer_' + selectedImage!.name;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } catch (error) {
-            console.error('Error downloading image from S3:', error);
-        }
+    const downloadImage = (url: string, filename: string) => {
+        fetch(url)
+            .then((response) => response.blob())
+            .then((blob) => {
+                const blobUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            })
+            .catch((error) => {
+                console.error('Error downloading image:', error);
+            });
     };
 
     const handleFullCollectionDownload = () => {
@@ -93,6 +83,7 @@ const CollectionComponent: React.FC = () => {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
     return (
         <div className={styles.container}>
             {loading ? (
@@ -126,7 +117,7 @@ const CollectionComponent: React.FC = () => {
                             open={true}
                             onClose={() => setSelectedImage(null)}
                             image={selectedImage}
-                            download={downloadImageFromS3}
+                            download={() => downloadImage(selectedImage.url, `LironeFitoussiPhotographer_${selectedImage.name}`)}
                         />
                     )}
                     <button className={styles.driveBtn} onClick={handleFullCollectionDownload}>
