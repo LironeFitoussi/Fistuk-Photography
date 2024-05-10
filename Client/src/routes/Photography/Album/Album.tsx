@@ -9,17 +9,18 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { Collection } from '../../../types/interfaces';
 import serverUrl from '../../../utils/APIUrl';
+import type { Album } from '../../../types/interfaces';
 interface AlbumProps {
     // Define the props for the Album component here
 }
 
 const Album: React.FC<AlbumProps> = () => {
     // Get the id from the URL
-    const { albumId } = useParams<{ id: string }>();
+    const { albumId } = useParams<{ albumId: string }>();
     // console.log(albumId);
     
     const [collections, setCollections] = React.useState([]);
-    const [album, setAlbum] = React.useState([]);
+    const [album, setAlbum] = React.useState<(Album)>();
     const [loading, setLoading] = React.useState(true);
     const [albumLoading, setAlbumLoading] = React.useState(true);
     useEffect(() => {
@@ -74,12 +75,12 @@ const Album: React.FC<AlbumProps> = () => {
             ) : (
             <div className={styles.container}>
                     <div className={styles.albumCover}>
-                        <img src={album.albumCover} alt="" />
+                        <img src={album!.albumCover} alt="" />
                         <div className={styles.shadowOverlay}></div>
                     </div>
                     <div className={styles.infoContainer}>
-                    <h1>{album.name}</h1>
-                    <p>{album.description}</p>
+                    <h1>{album!.name}</h1>
+                    <p>{album!.description}</p>
                     </div>
                 <div className={styles.collectionContainer}>
                     {loading ? (
