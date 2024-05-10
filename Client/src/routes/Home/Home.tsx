@@ -9,11 +9,11 @@ const Home: React.FC = () => {
                 <p className={styles.slogan}>"Building the Future, One Line of Code at a Time"</p>
                 <img className={styles.devLogo} src="/dev-logo.png" alt="" />
             </section>
-            <section className={styles.aboutMe}>
+             <section className={styles.aboutMe}>
                 <h2>About Me</h2>
                 <p>Insert your information here...</p>
             </section>
-
+{/*
             <section className={styles.projects}>
                 <h2>Projects</h2>
                 <p>Insert your projects here...</p>
@@ -22,7 +22,17 @@ const Home: React.FC = () => {
             <section>
                 <h2>Slogans</h2>
                 <p>Insert your slogans here...</p>
-            </section>
+            </section> */}
+            {/* Temporary div with lorem ipsum and header of - site still in developemt */}
+            <div className={styles.lorem}>
+                <h2>Site still in development</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                    , sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+            </div>
         </div>
     );
 };

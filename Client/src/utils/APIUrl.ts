@@ -1,5 +1,5 @@
 let serverUrl: string = '';
-console.log(import.meta.env.VITE_MODE);
+// console.log(import.meta.env.VITE_MODE);
 
 if (import.meta.env.VITE_MODE === 'production') {
     serverUrl = 'https://lirone-fitoussi-dev-api.onrender.com';

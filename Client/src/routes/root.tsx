@@ -8,7 +8,7 @@ const Root: React.FC = () => {
     <>
       <Navbar />
       <div style={{
-        minHeight: '80vh',
+        minHeight: '75vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',

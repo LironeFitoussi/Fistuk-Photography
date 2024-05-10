@@ -27,7 +27,7 @@ const Album: React.FC<AlbumProps> = () => {
     const detectLanguage = (text: string) => {
         // Detect the language of the text
         const languageCode = franc(text);
-        console.log(languageCode);
+        // console.log(languageCode);
         
         // Return the detected language code (e.g., 'en' for English, 'he' for Hebrew, etc.)
         return languageCode;
