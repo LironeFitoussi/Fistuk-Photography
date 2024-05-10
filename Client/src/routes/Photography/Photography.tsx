@@ -5,7 +5,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 // import AlbumTable from '../../components/AlbumTable';
 const AlbumCard = React.lazy(() => import('../../components/AlbumCard/AlbumCard'));
-
+import CircularProgress from '@mui/material/CircularProgress';
+import { Box } from '@mui/material';
 // import { Collection } from '../../types/interfaces';
 import { Album } from '../../types/interfaces';
 import serverUrl from '../../utils/APIUrl';
@@ -55,11 +56,17 @@ const Photography = () => {
         <div className={styles.container}>
             { (
                 <div>
-                    {!loading && albums.map((album: Album) => (
-                        <Link to={`/albums/${album._id}`} key={album._id}>
-                            <AlbumCard album={album} />
-                        </Link>
-                    ))}
+                    {loading  ? (
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                            <CircularProgress />
+                        </Box>
+                    ) : (
+                        albums.map((album: Album) => (
+                            <Link to={`/albums/${album._id}`} key={album._id}>
+                                <AlbumCard album={album} />
+                            </Link>
+                        ))
+                    )}
                 </div>
             )}
             <Outlet />
