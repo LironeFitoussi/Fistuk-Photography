@@ -11,16 +11,9 @@ import ImageModal from '../../../components/ImageModal/ImageModal';
 
 import serverUrl from '../../../utils/APIUrl';
 import { Collection } from '../../../types/interfaces';
+import { Photo } from '../../../types/interfaces';
 
-interface Photo {
-    _id: string;
-    name: string;
-    filename: string;
-    collectionId: string;
-    __v: number;
-    url: string;
-}
-const loadImage = async (src) => {
+const loadImage = async (src: string) => {
     return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = () => resolve(img);
@@ -36,7 +29,7 @@ const CollectionComponent: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
     const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
-    const [loadedImages, setLoadedImages] = useState([]);
+    const [loadedImages, setLoadedImages] = useState<(Photo[])>([]);
     const [downloading, setDownloading] = useState(false);
 
     useEffect(() => {
