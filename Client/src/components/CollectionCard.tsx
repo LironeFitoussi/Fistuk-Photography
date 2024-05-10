@@ -26,7 +26,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({collection}) => {
   }
   , []);
 
-    console.log(collection);
+    // console.log(collection);
     
     // validation of image cover for the collection
     const imageUrl = collection.imageCover? collection.imageCover : collection.images[0]? collection.images[0].url : 'https://www.iguanafoundation.org/wp-content/uploads/2019/06/green-iguana-1.jpg';

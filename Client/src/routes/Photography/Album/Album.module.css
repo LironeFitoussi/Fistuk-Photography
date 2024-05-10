@@ -1,10 +1,41 @@
 .container {
-  width: 70vw;
+  width: 100vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 20px;
   align-self: center;
+}
+
+.infoContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.albumCover {
+  width: 100%;
+  height: auto;
+  position: relative;
+  margin-bottom: -25vh;
+  z-index: -1;
+}
+
+.albumCover img {
+  width: 100%;
+  height: auto;
+}
+
+.shadowOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, #f1f1f1, #f1f1f194);
 }
 
 /* sceen above 768 media query */
