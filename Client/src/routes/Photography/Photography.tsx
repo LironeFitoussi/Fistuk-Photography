@@ -55,12 +55,11 @@ const Photography = () => {
         <div className={styles.container}>
             { (
                 <div>
-                    {loading && albums.map((album: Album) => (
+                    {!loading && albums.map((album: Album) => (
                         <Link to={`/albums/${album._id}`} key={album._id}>
                             <AlbumCard album={album} />
                         </Link>
                     ))}
-
                 </div>
             )}
             <Outlet />

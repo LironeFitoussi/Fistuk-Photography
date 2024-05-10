@@ -30,7 +30,7 @@ const Album: React.FC<AlbumProps> = () => {
     return (
         // display the albums here
         <div>
-            {loading && (
+            {!loading && (
                 <div className={styles.container}>
                     {collections.map((collection: Collection) => (
                         <CollectionCard collection={collection} />
