@@ -9,10 +9,26 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <meta
-      name="description"
-      content="Lirone Fitoussi Development & Photography, contant me: +972-58-510-98-29"
-    />
+    <!-- Genrate full meta info to prefectly preview site info such as in whatsapp links etc -->
+    <script>
+      const meta = document.createElement("meta");
+      meta.setAttribute("property", "og:title");
+      meta.content = "Lirone Fitoussi Development";
+      document.head.appendChild(meta);
+      const meta2 = document.createElement("meta");
+      meta2.setAttribute("property", "og:description");
+      meta2.content =
+        "Lirone Fitoussi Development is a full stack developer, with experience in web development, mobile development, and desktop development.";
+      document.head.appendChild(meta2);
+      const meta3 = document.createElement("meta");
+      meta3.setAttribute("property", "og:image");
+      meta3.content = "/favicon.png";
+      document.head.appendChild(meta3);
+      const meta4 = document.createElement("meta");
+      meta4.setAttribute("property", "og:url");
+      meta4.content = "https://lirone-fitoussi-dev.onrender.com/";
+      document.head.appendChild(meta4);
+    </script>
 
     <!-- alert message to tell tuse site is still in development and there might be some bugs, and low loading bandwitch -->
     <script>
