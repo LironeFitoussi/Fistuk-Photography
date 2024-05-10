@@ -53,7 +53,7 @@ const CollectionComponent: React.FC = () => {
         setSelectedImage(photo);
     };
 
-    const downloadImage = async (url: string, filename: string) => {
+    const downloadImage = async (filename: string) => {
         try {
             const fileName = filename
             const response = await axios.get(`${serverUrl}/api/v1/images/downloadImage/?fileName=${fileName}`, {
@@ -117,7 +117,7 @@ const CollectionComponent: React.FC = () => {
                             open={true}
                             onClose={() => setSelectedImage(null)}
                             image={selectedImage}
-                            download={() => downloadImage(selectedImage.url, selectedImage.filename)}
+                            download={() => downloadImage(selectedImage.filename)}
                         />
                     )}
                     <button className={styles.driveBtn} onClick={handleFullCollectionDownload}>
