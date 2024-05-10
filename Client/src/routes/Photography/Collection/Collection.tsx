@@ -53,21 +53,21 @@ const CollectionComponent: React.FC = () => {
         setSelectedImage(photo);
     };
 
-    const downloadImage = (url: string, filename: string) => {
-        fetch(url)
-            .then((response) => response.blob())
-            .then((blob) => {
-                const blobUrl = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            })
-            .catch((error) => {
-                console.error('Error downloading image:', error);
-            });
+    const downloadImage = async (url: string, filename: string) => {
+        try {
+            const fileName = filename
+            const response = await axios.get(`${serverUrl}/api/v1/images/downloadImage/?fileName=${fileName}`, {
+            responseType: 'blob', // Important for downloading binary data
+        });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `LironeFitoussiPhotography_${fileName}`);
+            document.body.appendChild(link);
+            link.click();
+        } catch (error) {
+            console.error('Error downloading file:', error);
+        }
     };
 
     const handleFullCollectionDownload = () => {
@@ -117,7 +117,7 @@ const CollectionComponent: React.FC = () => {
                             open={true}
                             onClose={() => setSelectedImage(null)}
                             image={selectedImage}
-                            download={() => downloadImage(selectedImage.url, `LironeFitoussiPhotographer_${selectedImage.name}`)}
+                            download={() => downloadImage(selectedImage.url, selectedImage.filename)}
                         />
                     )}
                     <button className={styles.driveBtn} onClick={handleFullCollectionDownload}>

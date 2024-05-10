@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import Image from '../models/Image.model';
 import Collection from '../models/Collections.model';
 import ProgressBar from 'progress';
+import s3 from '../s3'
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -12,11 +13,20 @@ import {
   S3Client, 
   PutObjectCommand,
   GetObjectCommand
+  
 } from "@aws-sdk/client-s3";
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-import s3 from '../s3';
 
-const bucketName = process.env.AWS_BUCKET_NAME
+const s3Client = new S3Client({ 
+  region: process.env.AWS_REGION || '',
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY || '',
+    secretAccessKey: process.env.AWS_SECRET_KEY || '',
+  },
+}); // Replace 'your-region' with your AWS region
+
+
+const bucketName = process.env.AWS_BUCKET_NAME || '';
 interface CustomFile extends File {
     buffer: Buffer;
     originalname: string;
@@ -152,4 +162,33 @@ export const deleteImage = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({ message: 'Failed to delete image', error });
     }
+};
+
+export const downloadImage = async (req: Request, res: Response) => {
+  console.log('downloadImage');
+  
+  try {
+    const { fileName } = req.query;
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME || '',
+      Key: fileName as string,
+    };
+    const command = new GetObjectCommand(params);
+    const { Body } = await s3Client.send(command);
+    console.log(Body);
+    
+
+    res.setHeader('Content-Disposition', `attachment; filename="LironeFitoussiPhotography${fileName}"`);
+    res.setHeader('Content-Type', 'image/jpeg'); // Set appropriate content type
+
+    if (Body) {
+      const readableStream = Body as any;
+      readableStream.pipe(res); // Pipe the S3 object's stream directly to the response
+    } else {
+      throw new Error('Empty response body');
+    }
+  } catch (error) {
+    console.error('Error downloading file:', error);
+    res.status(500).send('Error downloading file');
+  }
 };
