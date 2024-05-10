@@ -14,7 +14,7 @@ const Photography = () => {
     // const [activeLink, setActiveLink] = useState('albums');
     // const [collections, setCollections] = useState([]);
     const [albums, setAlbums] = useState([]);
-
+    const [loading, setLoading] = useState(true);
     // const handleLinkClick = (link: string) => {
     //     setActiveLink(link);
     // };
@@ -48,44 +48,14 @@ const Photography = () => {
             }
         };
         albums();
+        setLoading(false);
     }, []);
 
     return (
         <div className={styles.container}>
-            {/* <ul className={styles.nav}>
-                <li>
-                    <button onClick={() => handleLinkClick('collections')}>Collections</button>
-                </li>
-                <li>
-                    <button onClick={() => handleLinkClick('albums')}>Albums</button>
-                </li>
-            </ul> */}
-{/*
-            {activeLink === 'collections' && (
-                <div>
-                     Renders a list of Collection names with link to /collections/:collectionId 
-                    <ul>
-                        {collections.map((collection: Collection) => (
-                            <li key={collection._id}>
-                                <Link to={`/collections/${collection._id}`}>{collection.name}</Link>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-*/}
             { (
                 <div>
-                    {/* Renders a list of Album names with link to /album/:albumId */}
-                    {/* <ul>
-                        {albums.map((album: any) => (
-                            <li key={album._id}>
-                                <Link to={`/albums/${album._id}`}>{album.name}</Link>    
-                            </li>
-                        ))}
-                    </ul> */}
-                    {/* <AlbumTable albums={albums} /> */}
-                    {albums.map((album: Album) => (
+                    {loading && albums.map((album: Album) => (
                         <Link to={`/albums/${album._id}`} key={album._id}>
                             <AlbumCard album={album} />
                         </Link>

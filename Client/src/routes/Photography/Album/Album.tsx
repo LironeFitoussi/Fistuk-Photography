@@ -11,6 +11,7 @@ interface AlbumProps {
 
 const Album: React.FC<AlbumProps> = () => {
     const [collections, setCollections] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
     useEffect(() => {
         // Fetch Collections from  server usinx axios in a async function
         const fetchCollections = async () => {
@@ -22,15 +23,20 @@ const Album: React.FC<AlbumProps> = () => {
             }
         };
         fetchCollections();
+        setLoading(false);
     }, []);
 
     // Define the Album component here
     return (
         // display the albums here
-        <div className={styles.container}>
-            {collections.map((collection: Collection) => (
-                <CollectionCard collection={collection} />
-            ))}
+        <div>
+            {loading && (
+                <div className={styles.container}>
+                    {collections.map((collection: Collection) => (
+                        <CollectionCard collection={collection} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
