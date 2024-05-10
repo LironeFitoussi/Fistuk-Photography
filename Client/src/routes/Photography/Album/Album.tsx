@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 const CollectionCard = React.lazy(() => import('../../../components/CollectionCard'));
 import Box from '@mui/material/Box';
-
+import { franc } from 'franc';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { Collection } from '../../../types/interfaces';
@@ -23,6 +23,16 @@ const Album: React.FC<AlbumProps> = () => {
     const [album, setAlbum] = React.useState<(Album)>();
     const [loading, setLoading] = React.useState(true);
     const [albumLoading, setAlbumLoading] = React.useState(true);
+
+    const detectLanguage = (text: string) => {
+        // Detect the language of the text
+        const languageCode = franc(text);
+        console.log(languageCode);
+        
+        // Return the detected language code (e.g., 'en' for English, 'he' for Hebrew, etc.)
+        return languageCode;
+    };
+
     useEffect(() => {
         // Fetch Collections from  server usinx axios in a async function
         const fetchCollections = async () => {
@@ -41,7 +51,7 @@ const Album: React.FC<AlbumProps> = () => {
         const fetchAlbum = async () => {
             try {
                 const response = await axios.get(`${serverUrl}/api/v1/albums/${albumId}`);
-                console.log(response.data.data.album);
+                // console.log(response.data.data.album);
 
                 setAlbum(response.data.data.album);
             } catch (error) {
@@ -79,8 +89,9 @@ const Album: React.FC<AlbumProps> = () => {
                         <div className={styles.shadowOverlay}></div>
                     </div>
                     <div className={styles.infoContainer}>
-                    <h1>{album!.name}</h1>
-                    <p>{album!.description}</p>
+                    <h1 lang={detectLanguage(album!.name)}>{album!.name}</h1>
+
+                    <p lang={detectLanguage(album!.description)}>{album!.description}</p>
                     </div>
                 <div className={styles.collectionContainer}>
                     {loading ? (
@@ -90,7 +101,7 @@ const Album: React.FC<AlbumProps> = () => {
                     ) : (
                         <div className={styles.container}>
                             {collections.map((collection: Collection) => (
-                                <CollectionCard collection={collection} />
+                                <CollectionCard key={collection._id} collection={collection} />
                             ))}
                         </div>
                     )}

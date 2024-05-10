@@ -7,6 +7,7 @@ import { Collection } from '../types/interfaces';
 import { Link } from 'react-router-dom';
 import { FaEye } from "react-icons/fa";
 import {useState, useEffect} from 'react';
+
 interface CollectionCardProps {
     collection: Collection;
 }
@@ -61,9 +62,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({collection}) => {
           <Typography gutterBottom variant="h5" component="div">
             {collection.name}
           </Typography>
-          <Link to={`/collections/${collection._id}`}>
-            
-          </Link>
+          <Link to={`/collections/${collection._id}`}></Link>
         </CardContent>
       </CardActionArea>
       <CardActions>
