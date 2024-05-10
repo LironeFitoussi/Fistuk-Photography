@@ -20,6 +20,14 @@ interface Photo {
     __v: number;
     url: string;
 }
+const loadImage = async (src) => {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+    });
+};
 
 const CollectionComponent: React.FC = () => {
     const { collectionId } = useParams<{ collectionId: string }>();
@@ -28,13 +36,14 @@ const CollectionComponent: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [selectedImage, setSelectedImage] = useState<Photo | null>(null);
     const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+    const [loadedImages, setLoadedImages] = useState([]);
+
 
     useEffect(() => {
         const fetchCollection = async () => {
             try {
                 const response = await axios.get(`${serverUrl}/api/v1/collections/${collectionId}`);
                 setCollection(response.data.data.collection);
-                setLoading(false);
             } catch (error) {
                 console.error('Error fetching collection', error);
                 setError('Failed to fetch collection');
@@ -84,6 +93,28 @@ const CollectionComponent: React.FC = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+       if (collection !== null) {
+         const loadImages = async () => {
+            const images = await Promise.all(
+                collection.images.map(async (item) => {
+                    const image = await loadImage(item.url);
+                    return { ...item, image };
+                })
+            );
+            setLoadedImages(images);
+        };
+
+        loadImages();
+       }
+    }, [collection]);
+
+    useEffect(() => {
+        if (loadedImages.length > 0) {
+            setLoading(false);
+        }
+    }, [loadedImages]);
+    
     return (
         <div className={styles.container}>
             {loading ? (
@@ -101,13 +132,14 @@ const CollectionComponent: React.FC = () => {
                         // check the screen width and set the number of columns accordingly
                         screenWidth > 1200 ? 5 : screenWidth > 800 ? 4 : 2
                     } gap={8}>
-                        {collection.images.map((item) => (
+                        {loadedImages.map((item) => (
                             <ImageListItem key={item.filename}>
                                 <img
                                     src={item.url}
                                     alt={item.name}
                                     onClick={() => openModal(item)}
                                     onLoad={handleImageLoad}
+                                    className={styles.image}
                                 />
                             </ImageListItem>
                         ))}

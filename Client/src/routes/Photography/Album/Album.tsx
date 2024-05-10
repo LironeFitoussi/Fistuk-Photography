@@ -2,6 +2,9 @@ import styles from './Album.module.css';
 import React, { useEffect } from 'react';
 import axios from 'axios';
 const CollectionCard = React.lazy(() => import('../../../components/CollectionCard'));
+import Box from '@mui/material/Box';
+
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { Collection } from '../../../types/interfaces';
 import serverUrl from '../../../utils/APIUrl';
@@ -23,14 +26,24 @@ const Album: React.FC<AlbumProps> = () => {
             }
         };
         fetchCollections();
-        setLoading(false);
     }, []);
+
+    useEffect(() => {
+        if (collections.length > 0) {
+            setLoading(false);
+        }
+    }
+    , [collections]);
 
     // Define the Album component here
     return (
         // display the albums here
         <div>
-            {!loading && (
+            {loading ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                    <CircularProgress />
+                </Box>
+            ) : (
                 <div className={styles.container}>
                     {collections.map((collection: Collection) => (
                         <CollectionCard collection={collection} />
