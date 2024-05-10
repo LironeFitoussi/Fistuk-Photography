@@ -4,11 +4,11 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import AWS from 'aws-sdk';
 
-const CircularProgress = React.lazy(() => import('@mui/material/CircularProgress'));
-const Box = React.lazy(() => import('@mui/material/Box'));
-const ImageList = React.lazy(() => import('@mui/material/ImageList'));
-const ImageListItem = React.lazy(() => import('@mui/material/ImageListItem'));
-const ImageModal = React.lazy(() => import('../../../components/ImageModal/ImageModal'));
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageModal from '../../../components/ImageModal/ImageModal';
 
 import serverUrl from '../../../utils/APIUrl';
 import { Collection } from '../../../types/interfaces';
