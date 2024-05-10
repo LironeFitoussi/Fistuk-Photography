@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 
 import 'globalthis/auto';
 import ReactDOM from 'react-dom/client'
@@ -79,5 +79,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <RouterProvider router={router}/>
+   <Suspense fallback={<div>Loading...</div>}>
+     <RouterProvider router={router}/>
+    </Suspense>
 )
