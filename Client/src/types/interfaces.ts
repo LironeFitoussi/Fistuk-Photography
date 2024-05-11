@@ -29,3 +29,17 @@ export interface Album {
     albumCover: string;
     __v: number;
 }
+
+type ProjectType = 'mini-project' | 'full-project';
+// type ProjectTechnologies = string[]; // Fix the type declaration
+export interface Project {
+    _id?: string;
+    title: string;
+    description: string;
+    technologies: string;
+    githubLink: string;
+    demoLink: string;
+    previewImage: string;
+    projectType: ProjectType;
+    __v: number;
+}

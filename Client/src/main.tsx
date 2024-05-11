@@ -26,6 +26,8 @@ const Upload = lazy(() => import('./routes/Admin/Upload/Upload.tsx'));
 const CollectionsPanel = lazy(() => import('./routes/Admin/Collections/CollectionsPanel.tsx'));
 const AlbumsPanel = lazy(() => import('./routes/Admin/Albums/AlbumsPanel.tsx'));
 
+// Development Routes
+const Development = lazy(() => import('./routes/Development/Development/Development.tsx'));
 
 // Error page
 import ErrorPage from "./error-page";
@@ -35,10 +37,12 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root/>,
     children: [
+      // Home
       {
         path: "/",
         element: <Home/>,
       },
+      // Photography
       {
         path: "photography",
         element: <Photography/>,
@@ -51,6 +55,8 @@ const router = createBrowserRouter([
         path: "albums/:albumId",
         element: <Album/>,
       },
+
+      // Admin
       {
         path: 'admin',
         element: <Admin/>,
@@ -72,9 +78,22 @@ const router = createBrowserRouter([
             element: <AlbumsPanel/>,
           },
         ]
-      }
+      },
+
+      // Development
+      {
+        path: "development",
+        element: <Development/>,
+        children: [
+          {
+            path: "test",
+            element: <div>Test</div>,
+          },
+        ],
+      },
+
     ],
-    errorElement: <ErrorPage />,
+    // errorElement: <ErrorPage />,
   },
 ]);
 

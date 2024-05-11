@@ -13,6 +13,7 @@ import AWS from 'aws-sdk';
 import collectionsRoutes from "./routes/collectionsRoutes";
 import imagesRoutes from "./routes/imagesRoutes";
 import albumsRoutes from "./routes/albumsRoutes";
+import projectsRoutes from "./routes/projectsRoutes";
 declare global {
   namespace Express {
     interface Request {
@@ -80,7 +81,7 @@ app.use((req: Request, res: Response, next) => {
 app.use("/api/v1/collections", collectionsRoutes); 
 app.use("/api/v1/images", imagesRoutes);
 app.use("/api/v1/albums", albumsRoutes);
-
+app.use("/api/v1/projects", projectsRoutes);
 
 //! TODO: Setup Routes 
 
