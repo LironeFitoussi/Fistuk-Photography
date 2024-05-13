@@ -44,28 +44,14 @@ const Development: React.FC = () => {
             <h1>Development Component</h1>
             <section>
                 <h1>Mini Projects</h1>
-                <div style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'space-around',
-                    alignItems: 'center',
-                    width: '85vw',
-                    padding: '1rem',
-                }}>
+                <div className={styles.projectsContainer}>
                     {miniProjects.map((miniProject) => {
                         return <ProjectCard key={miniProject._id} project={miniProject} />;
                     })}
                 </div>
 
                 <h1>Main Projects</h1>
-                <div style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'space-around',
-                    alignItems: 'center',
-                    width: '85vw',
-                    padding: '1rem',
-                }}>
+                <div className={styles.projectsContainer}>
                     {mainProjects.map((mainProject) => {
                         return <ProjectCard key={mainProject._id} project={mainProject} />;
                     })}
