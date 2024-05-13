@@ -21,12 +21,69 @@ label {
   font-weight: bold;
 }
 
-input,
+.stackEl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-right: 10px;
+  margin-bottom: 10px; /* Add margin-bottom for spacing between items */
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+}
+
+.atackEl button:hover {
+  background-color: #e0e0e0 !important;
+}
+
+.stackInput {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  align-items: center;
+  justify-content: flex-start; /* Start from the left */
+  min-height: 1rem; /* Set a minimum height to prevent collapsing */
+  padding: 5px; /* Add padding for better appearance */
+}
+
+.techStackInput {
+  /* Remove all input default styling */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 0;
+  background-color: transparent;
+  flex-grow: 1; /* Allow the input to grow to fill available space */
+  border: 0;
+  background-color: transparent;
+}
+
+.techStackInput:focus {
+  outline: none;
+}
+
+.rmvBtn {
+  background-color: #f0f0f0;
+  color: rgb(131, 131, 131);
+  border: none;
+  padding: 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.input,
+.stackInput,
 textarea {
   width: 70vw;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 3px;
+  background-color: aliceblue;
+}
+
+.input {
+  height: 1.5vh;
 }
 
 button {
@@ -36,8 +93,4 @@ button {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
 }

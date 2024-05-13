@@ -4,21 +4,26 @@
 import styles from './Development.module.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import serverUrl from '../../../utils/APIUrl';
 // Components imports
 import AddNewProject from '../../../components/AddNewProject/AddNewProject';
-
+import ProjectCard from '../../../components/ProjectCard/ProjectCard';
+import { Project } from '../../../types/interfaces';
 const Development: React.FC = () => {
-    const [miniProjects, setMiniProjects] = useState<any[]>([]);
+    const [miniProjects, setMiniProjects] = useState<Project[]>([]);
+    const [mainProjects, setMainProjects] = useState<Project[]>([]);
     // Fetch mini projects from database using axios and tryCatch block inisde a useEffect hook
     useEffect(() => {
         // Fetch mini projects
         const fetchMiniProjects = async () => {
             try {
                 // Fetch mini projects
-                const response = await axios.get('/api/mini-projects');
-                console.log(response.data.data.miniProjects);
-                setMiniProjects(response.data.data.miniProjects);
+                const response = await axios.get(`${serverUrl}/api/v1/projects`);
+                console.log(response.data.data.projects);
+                const miniProjects = response.data.data.projects.filter((project: Project) => project.projectType === 'mini-project');
+                const mainProjects = response.data.data.projects.filter((project: Project) => project.projectType === 'main-project');
+                setMiniProjects(miniProjects);
+                setMainProjects(mainProjects);
             } catch (error) {
                 console.error(error);
             }
@@ -27,22 +32,43 @@ const Development: React.FC = () => {
         fetchMiniProjects();
     }, []);
 
+    // TODO: Add a section to display main projects
+    useEffect(() => {
+        console.log(mainProjects);
+    }, [mainProjects]);
 
     return (
         <div className={styles.container}>
-            { (import.meta.env.VITE_MODE === 'development' || import.meta.env.VITE_MODE === 'front-dev') && 
-                <AddNewProject />
-            }
+            {(import.meta.env.VITE_MODE === 'development' || import.meta.env.VITE_MODE === 'front-dev') 
+                && <AddNewProject /> }
             <h1>Development Component</h1>
             <section>
                 <h1>Mini Projects</h1>
-                <div>
-                    {miniProjects.map((miniProject) => (
-                        <div key={miniProject._id}>
-                            <h2>{miniProject.title}</h2>
-                            <p>{miniProject.description}</p>
-                        </div>
-                    ))}
+                <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                    width: '85vw',
+                    padding: '1rem',
+                }}>
+                    {miniProjects.map((miniProject) => {
+                        return <ProjectCard key={miniProject._id} project={miniProject} />;
+                    })}
+                </div>
+
+                <h1>Main Projects</h1>
+                <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-around',
+                    alignItems: 'center',
+                    width: '85vw',
+                    padding: '1rem',
+                }}>
+                    {mainProjects.map((mainProject) => {
+                        return <ProjectCard key={mainProject._id} project={mainProject} />;
+                    })}
                 </div>
             </section>
         </div>

@@ -93,7 +93,7 @@ const router = createBrowserRouter([
       },
 
     ],
-    // errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />,
   },
 ]);
 

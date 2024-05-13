@@ -30,13 +30,13 @@ export interface Album {
     __v: number;
 }
 
-type ProjectType = 'mini-project' | 'full-project';
+type ProjectType = 'mini-project' | 'main-project';
 // type ProjectTechnologies = string[]; // Fix the type declaration
 export interface Project {
     _id?: string;
     title: string;
     description: string;
-    technologies: string;
+    technologies: string[];
     githubLink: string;
     demoLink: string;
     previewImage: string;
