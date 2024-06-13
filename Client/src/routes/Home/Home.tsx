@@ -13,17 +13,6 @@ const Home: React.FC = () => {
                 <h2>About Me</h2>
                 <p>Insert your information here...</p>
             </section>
-{/*
-            <section className={styles.projects}>
-                <h2>Projects</h2>
-                <p>Insert your projects here...</p>
-            </section>
-
-            <section>
-                <h2>Slogans</h2>
-                <p>Insert your slogans here...</p>
-            </section> */}
-            {/* Temporary div with lorem ipsum and header of - site still in developemt */}
             <div className={styles.lorem}>
                 <h2>Site still in development</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit

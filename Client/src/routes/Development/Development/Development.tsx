@@ -19,7 +19,7 @@ const Development: React.FC = () => {
             try {
                 // Fetch mini projects
                 const response = await axios.get(`${serverUrl}/api/v1/projects`);
-                console.log(response.data.data.projects);
+                // console.log(response.data.data.projects);
                 const miniProjects = response.data.data.projects.filter((project: Project) => project.projectType === 'mini-project');
                 const mainProjects = response.data.data.projects.filter((project: Project) => project.projectType === 'main-project');
                 setMiniProjects(miniProjects);
@@ -33,9 +33,9 @@ const Development: React.FC = () => {
     }, []);
 
     // TODO: Add a section to display main projects
-    useEffect(() => {
-        console.log(mainProjects);
-    }, [mainProjects]);
+    // useEffect(() => {
+    //     console.log(mainProjects);
+    // }, [mainProjects]);
 
     return (
         <div className={styles.container}>
