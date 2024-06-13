@@ -40,9 +40,9 @@ export default function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleMenuItemClick = (): void => {
-    setIsMenuOpen(false); // Close the menu when any menu item is clicked
-  };
+  // const handleMenuItemClick = (): void => {
+  //   setIsMenuOpen(!isMenuOpen); // Close the menu when any menu item is clicked
+  // };
 
   const menuItems: MenuItem[] = [
     { name: "Home", link: "/" },
@@ -81,7 +81,7 @@ export default function Navbar() {
             button
             component={Link}
             to={item.link}
-            onClick={handleMenuItemClick}
+            onClick={toggleMenu}
             key={item.name}
           >
             <ListItemText primary={item.name} />
@@ -102,7 +102,7 @@ export default function Navbar() {
           component={Link}
           to={item.link}
           sx={{ marginRight: 4, textDecoration: "none", color: "inherit" }}
-          onClick={handleMenuItemClick}
+          onClick={toggleMenu}
         >
           {item.name}
         </Typography>
