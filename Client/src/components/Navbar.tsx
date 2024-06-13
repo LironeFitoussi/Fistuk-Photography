@@ -29,20 +29,13 @@ interface MenuItem {
 export default function Navbar() {
   const { isAuthenticated, user } = useAuth0();
 
-  // console.log(user);
-
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  // const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const theme: Theme = useTheme();
-  const isDesktop: boolean = useMediaQuery(theme.breakpoints.up("md")); // 'md' breakpoint typically starts at 768px
+  const isDesktop: boolean = useMediaQuery(theme.breakpoints.up("md"));
 
   const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
   };
-
-  // const handleMenuItemClick = (): void => {
-  //   setIsMenuOpen(!isMenuOpen); // Close the menu when any menu item is clicked
-  // };
 
   const menuItems: MenuItem[] = [
     { name: "Home", link: "/" },
@@ -71,17 +64,16 @@ export default function Navbar() {
       >
         <img
           className={styles.mainLogo}
-          src={"/light-logo.png"}
+          src="/light-logo.png"
           alt="Lirone Fitoussi Development"
         />
       </Box>
       <List>
         {menuItems.map((item) => (
           <ListItem
-            button
             component={Link}
             to={item.link}
-            onClick={toggleMenu}
+            onClick={toggleMenu} // Close menu on item click
             key={item.name}
           >
             <ListItemText primary={item.name} />
@@ -89,25 +81,7 @@ export default function Navbar() {
         ))}
       </List>
       <div>{isAuthenticated ? <LogoutButton /> : <LoginButton />}</div>
-
     </Drawer>
-  );
-
-  const desktopMenu = (
-    <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}>
-      {menuItems.map((item) => (
-        <Typography
-          key={item.name}
-          variant="h6"
-          component={Link}
-          to={item.link}
-          sx={{ marginRight: 4, textDecoration: "none", color: "inherit" }}
-          onClick={toggleMenu}
-        >
-          {item.name}
-        </Typography>
-      ))}
-    </Box>
   );
 
   return (
@@ -159,7 +133,19 @@ export default function Navbar() {
           </Typography>
           {isDesktop && (
             <>
-              {desktopMenu}
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                {menuItems.map((item) => (
+                  <Typography
+                    key={item.name}
+                    variant="h6"
+                    component={Link}
+                    to={item.link}
+                    sx={{ marginRight: 4, textDecoration: "none", color: "inherit" }}
+                  >
+                    {item.name}
+                  </Typography>
+                ))}
+              </Box>
               <div>{isAuthenticated ? <LogoutButton /> : <LoginButton />}</div>
             </>
           )}
