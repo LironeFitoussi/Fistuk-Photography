@@ -1,20 +1,29 @@
 /* AddNewProject.module.css */
 .container {
-  max-width: 600px;
-  /* margin: auto; */
+  width: 80vw;
+  display: flex;
+    flex-direction: column;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: #fff;
+  padding: 20px;
 }
 
 .form {
-  width: 100%;
-  /* padding: 20px; */
+  width: 98%;
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .formGroup {
   margin: 0 20px;
   margin-bottom: 15px;
-  width: 75vw;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 label {
@@ -27,7 +36,8 @@ label {
   justify-content: center;
   gap: 0.5rem;
   margin-right: 10px;
-  margin-bottom: 10px; /* Add margin-bottom for spacing between items */
+  margin-bottom: 10px;
+  /* Add margin-bottom for spacing between items */
   padding: 5px 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -40,11 +50,15 @@ label {
 
 .stackInput {
   display: flex;
-  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  flex-wrap: wrap;
+  /* Allow items to wrap to the next line */
   align-items: center;
-  justify-content: flex-start; /* Start from the left */
-  min-height: 1rem; /* Set a minimum height to prevent collapsing */
-  padding: 5px; /* Add padding for better appearance */
+  justify-content: flex-start;
+  /* Start from the left */
+  min-height: 1rem;
+  /* Set a minimum height to prevent collapsing */
+  padding: 5px;
+  /* Add padding for better appearance */
 }
 
 .techStackInput {
@@ -54,7 +68,8 @@ label {
   -moz-appearance: none;
   border: 0;
   background-color: transparent;
-  flex-grow: 1; /* Allow the input to grow to fill available space */
+  flex-grow: 1;
+  /* Allow the input to grow to fill available space */
   border: 0;
   background-color: transparent;
 }
@@ -75,7 +90,7 @@ label {
 .input,
 .stackInput,
 textarea {
-  width: 70vw;
+  width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 3px;

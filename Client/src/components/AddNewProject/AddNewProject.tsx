@@ -94,7 +94,6 @@ const AddNewProject: React.FC = () => {
             />
           </div>
 
-          {/* Add Tech input */}
           <div className={styles.formGroup}>
             <label>Technologies:</label>
             <div className={styles.stackInput}>
@@ -162,9 +161,8 @@ const AddNewProject: React.FC = () => {
               onChange={handleChange}
             />
           </div>
-
-          <button type="submit">Submit</button>
         </form>
+          <button type="submit">Submit</button>
       </div>
     )
   );
