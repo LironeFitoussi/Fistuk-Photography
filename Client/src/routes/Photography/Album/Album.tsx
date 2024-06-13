@@ -37,7 +37,7 @@ const Album: React.FC<AlbumProps> = () => {
         // Fetch Collections from  server usinx axios in a async function
         const fetchCollections = async () => {
             try {
-                const response = await axios.get(`${serverUrl}/api/v1/collections`);                
+                const response = await axios.get(`${serverUrl}/api/v1/collections/album/${albumId}`);                
                 setCollections(response.data.data.collections);
             } catch (error) {
                 console.error(error);

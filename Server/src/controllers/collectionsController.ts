@@ -67,6 +67,43 @@ export const getCollectionById = async (req: Request, res: Response) => {
     }
 };
 
+// GET all Collections with same AlbumId field is equal to the albumId parameter
+export const getCollectionsByAlbumId = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        console.log(req.params);
+        
+        console.log(id);
+        
+        const collections = await Collection.find({ albumId: id });
+        const collectionsWithImages = await Promise.all(collections.map(async (collection) => {
+            const images = await Image.find({ collectionId: collection._id });
+            return { ...collection.toObject(), images };
+        }));
+
+        res.status(200).json({
+            status: 'success',
+            results: collectionsWithImages.length,
+            data: {
+                collections: collectionsWithImages,
+            },
+        });
+
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            res.status(404).json({
+                status: 'fail',
+                message: err.message,
+            });
+        } else {
+            res.status(500).json({
+                status: 'fail',
+                message: 'An unexpected error occurred'
+            });
+        }
+    }
+}
+
 // POST create a new collection
 export const createCollection = async (req: Request, res: Response) => {
     // Your implementation here
