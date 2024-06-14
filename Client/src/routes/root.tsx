@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Outlet } from 'react-router-dom';
-const Navbar = React.lazy(() => import('../components/Navbar'));
-const Footer = React.lazy(() => import('../components/Footer/Footer'));
+import Navbar from '../components/Navbar'; // Import the Navbar component directly
+import Footer from '../components/Footer/Footer';
+
+const MemoizedNavbar = memo(Navbar); // Memoize the Navbar component
+
 const Root: React.FC = () => {
-  
   return (
     <>
-      <Navbar />
+      <MemoizedNavbar />
       <div style={{
         minHeight: '75vh',
         display: 'flex',
