@@ -32,15 +32,13 @@ const Development: React.FC = () => {
         fetchMiniProjects();
     }, []);
 
-    // TODO: Add a section to display main projects
     // useEffect(() => {
     //     console.log(mainProjects);
     // }, [mainProjects]);
 
     return (
         <div className={styles.container}>
-            {(import.meta.env.VITE_MODE === 'development' || import.meta.env.VITE_MODE === 'front-dev') 
-                && <AddNewProject /> }
+            <AddNewProject />
             <h1>Development Component</h1>
             <section>
                 <h1>Mini Projects</h1>

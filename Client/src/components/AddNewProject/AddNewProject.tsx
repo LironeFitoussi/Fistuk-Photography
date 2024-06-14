@@ -98,7 +98,7 @@ const AddNewProject: React.FC = () => {
             <label>Technologies:</label>
             <div className={styles.stackInput}>
               {techStack.map((tech, index) => (
-                <div className={styles.stackEl}>
+                <div key={`tech_${index}`} className={styles.stackEl}>
                   <span key={index}>{tech}</span>
                   <button
                     className={styles.rmvBtn}
@@ -161,8 +161,8 @@ const AddNewProject: React.FC = () => {
               onChange={handleChange}
             />
           </div>
-        </form>
           <button type="submit">Submit</button>
+        </form>
       </div>
     )
   );

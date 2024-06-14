@@ -17,3 +17,14 @@
   padding: 1rem;
   gap: 1rem;
 }
+
+/* 1920 Media */
+@media (min-width: 1920px) {
+  .container {
+    width: 60vw;
+  }
+
+  .projectsContainer {
+    width: 60vw;
+  }
+}
