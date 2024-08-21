@@ -1,31 +1,31 @@
-import { Suspense } from "react";
-import { createRoot } from 'react-dom/client';
+import { Suspense, lazy } from "react";
+import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import { Auth0Provider } from '@auth0/auth0-react';
+import { Auth0Provider } from "@auth0/auth0-react";
 
+// Importing components
 import Root from "./routes/root";
 
-// Routes
-
-import Home from "./routes/Home/Home";
-import Photography from "./routes/Photography/Photography";
-
-// Photography Routes
-import Collection from "./routes/Photography/Collection/Collection";
-import Album from "./routes/Photography/Album/Album";
-
-// Admin Routes
-import Admin from "./routes/Admin/Admin/Admin.tsx";
-import Dashboard from "./routes/Admin/Dashboard/Dashboard.tsx";
-import Upload from "./routes/Admin/Upload/Upload.tsx";
-import CollectionsPanel from "./routes/Admin/Collections/CollectionsPanel.tsx";
-import AlbumsPanel from "./routes/Admin/Albums/AlbumsPanel.tsx";
-
-// Development Routes
-import Development from "./routes/Development/Development/Development.tsx";
-
-// Error page
+// Lazy load routes if necessary
+const Home = lazy(() => import("./routes/Home/Home"));
+const Photography = lazy(() => import("./routes/Photography/Photography"));
+const Collection = lazy(
+  () => import("./routes/Photography/Collection/Collection")
+);
+const Album = lazy(() => import("./routes/Photography/Album/Album"));
+const Admin = lazy(() => import("./routes/Admin/Admin/Admin.tsx"));
+const Dashboard = lazy(() => import("./routes/Admin/Dashboard/Dashboard.tsx"));
+const Upload = lazy(() => import("./routes/Admin/Upload/Upload.tsx"));
+const CollectionsPanel = lazy(
+  () => import("./routes/Admin/Collections/CollectionsPanel.tsx")
+);
+const AlbumsPanel = lazy(() => import("./routes/Admin/Albums/AlbumsPanel.tsx"));
+const Development = lazy(
+  () => import("./routes/Development/Development/Development.tsx")
+);
+const Articles = lazy(() => import("./routes/Articles/Articles.tsx"));
+const Article = lazy(() => import("./routes/Articles/Article/Article.tsx"));
 import ErrorPage from "./error-page";
 
 const router = createBrowserRouter([
@@ -33,12 +33,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     children: [
-      // Home
       {
         path: "/",
         element: <Home />,
       },
-      // Photography
       {
         path: "photography",
         element: <Photography />,
@@ -51,8 +49,6 @@ const router = createBrowserRouter([
         path: "albums/:albumId",
         element: <Album />,
       },
-
-      // Admin
       {
         path: "admin",
         element: <Admin />,
@@ -75,8 +71,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-
-      // Development
       {
         path: "development",
         element: <Development />,
@@ -84,6 +78,16 @@ const router = createBrowserRouter([
           {
             path: "test",
             element: <div>Test</div>,
+          },
+        ],
+      },
+      {
+        path: "articles",
+        element: <Articles />,
+        children: [
+          {
+            path: "article/:articleId",
+            element: <Article />,
           },
         ],
       },

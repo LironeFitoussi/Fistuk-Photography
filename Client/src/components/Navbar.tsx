@@ -41,6 +41,7 @@ export default function Navbar() {
     { name: "Home", link: "/" },
     { name: "Photography", link: "/photography" },
     { name: "Development", link: "/development" },
+    { name: "Articles", link: "/articles" },
     // Check VITE_MODE and if development, add the following menu items
     ...(user?.nickname === "LironeFitoussi"
       ? [
@@ -140,7 +141,11 @@ export default function Navbar() {
                     variant="h6"
                     component={Link}
                     to={item.link}
-                    sx={{ marginRight: 4, textDecoration: "none", color: "inherit" }}
+                    sx={{
+                      marginRight: 4,
+                      textDecoration: "none",
+                      color: "inherit",
+                    }}
                   >
                     {item.name}
                   </Typography>
